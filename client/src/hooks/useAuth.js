@@ -1,24 +1,24 @@
 import { useSelector } from 'react-redux';
 import jwtDecode from 'jwt-decode';
 import { status } from '../features/Auth/authSlice';
-import { useNavigate } from 'react-router-dom';
-import { toast } from 'react-toastify';
-import { useEffect } from 'react';
 
 const useAuth = () => {
-  const navigate = useNavigate();
   const { token } = useSelector(status);
 
-  if (token) {
-    const decoded = jwtDecode(token);
-    const userData = decoded.UserInfo;
-
-    console.log(userData);
-
-    return userData;
+  if (!token) {
+    return { userData: [], isAdmin: false, isTeacher: false, role: null };
   }
 
-  return { userData: [] };
+  const decoded = jwtDecode(token);
+  const userData = decoded.UserData;
+
+  console.log(userData);
+
+  const isAdmin = userData.role === 'Admin';
+  const isTeacher = userData.role === 'Teacher';
+  const role = isAdmin ? 'Admin' : isTeacher ? 'Teacher' : null;
+
+  return { userData, role, isAdmin, isTeacher };
 };
 
 export default useAuth;

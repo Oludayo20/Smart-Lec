@@ -70,17 +70,22 @@ exports.login = asyncHandler(async (req, res) => {
   const accessToken = jwt.sign(
     {
       UserData: {
-        userId: foundUser._id,
-        username: foundUser.username,
-        email: foundUser.email
+        userId: foundUser.user_id,
+        role: foundUser.role,
+        firstName: foundUser.first_name,
+        middleName: foundUser.middle_name,
+        surname: foundUser.surname,
+        email: foundUser.email,
+        phoneNum: foundUser.phone_num,
+        profilePic: foundUser.profile_pic
       }
     },
     process.env.ACCESS_TOKEN_SECRET,
-    { expiresIn: '1m' }
+    { expiresIn: '60m' }
   );
 
   const refreshToken = jwt.sign({}, process.env.REFRESH_TOKEN_SECRET, {
-    expiresIn: '1m'
+    expiresIn: '60m'
   });
 
   //Create secure cookie with refresh token
@@ -93,4 +98,16 @@ exports.login = asyncHandler(async (req, res) => {
 
   // Send accessToken containing user data
   res.status(201).json({ accessToken });
+});
+
+exports.getAllTeacher = asyncHandler(async (req, res) => {
+  try {
+    const teachers = await Staff.getAllTeacher();
+    console.log(teachers);
+    return res.status(201).json(teachers);
+  } catch (error) {
+    return res.status(500).json({
+      message: error.message || 'Some error occurred while fetching Classes.'
+    });
+  }
 });

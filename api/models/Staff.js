@@ -18,7 +18,7 @@ const Staff = function ({
   this.email = email;
   this.password = password;
   this.phone_num = phone_num;
-  this.profile_pic = profile_pic;
+  this.profile_pic = profile_pic || 'Avatar';
 };
 
 Staff.register = async (newStaff) => {
@@ -46,4 +46,16 @@ Staff.login = async (email) => {
     return `Failed to get staff with username ${email}: ${err.sqlMessage}`;
   }
 };
+
+Staff.getAllTeacher = async () => {
+  try {
+    const [teacher] = await pool.query(
+      'select user_id, first_name, surname, profile_pic from users where role = "Teacher";'
+    );
+    return teacher.length ? teacher : null;
+  } catch (err) {
+    return err.sqlMessage;
+  }
+};
+
 module.exports = Staff;

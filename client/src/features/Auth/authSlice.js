@@ -5,20 +5,18 @@ let token;
 
 const initialState = {
   token: token ? token : null,
+  teachers: [],
   isSuccess: false,
   isLoading: false,
   message: '',
   isError: false
 };
 
-console.log(token);
-
 export const register = createAsyncThunk(
-  'auth/register',
+  'staff/register',
   async (userData, { rejectWithValue }) => {
     try {
-      const response = await axios.post('/auth/register', userData);
-      console.log(response.data);
+      const response = await axios.post('/staff/register', userData);
       return response.data.message;
     } catch (error) {
       const message =
@@ -34,11 +32,31 @@ export const register = createAsyncThunk(
 );
 
 export const login = createAsyncThunk(
-  'auth/login',
+  'staff/login',
   async (userData, { rejectWithValue }) => {
     try {
-      const response = await axios.post('/auth/login', userData);
+      const response = await axios.post('/staff/login', userData);
       return response.data.accessToken;
+    } catch (error) {
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.toString();
+      console.log(message);
+      return rejectWithValue(message);
+    }
+  }
+);
+
+export const getAllTeacher = createAsyncThunk(
+  'staff/getAllTeacher',
+  async (rejectWithValue) => {
+    try {
+      const response = await axios.get('staff/getAllTeacher');
+      console.log(response.data);
+      return response.data;
     } catch (error) {
       const message =
         (error.response &&
@@ -86,6 +104,20 @@ const authSlice = createSlice({
     },
     [login.pending]: (state) => {
       state.isLoading = true;
+    },
+    [getAllTeacher.pending]: (reset, state) => {
+      // state.isLoading = true;
+    },
+    [getAllTeacher.fulfilled]: (state, action) => {
+      // state.isLoading = false;
+      // state.isSuccess = true;
+      state.teachers = action.payload;
+    },
+    [getAllTeacher.rejected]: (state, action) => {
+      state.isLoading = false;
+      state.isError = true;
+      state.message = action.payload;
+      state.teachers = null;
     },
     [login.fulfilled]: (state, action) => {
       state.token = action.payload;

@@ -1,8 +1,9 @@
 const express = require('express');
 const router = express.Router();
-const adminController = require('../controllers/staffController');
+const staffController = require('../controllers/staffController');
 
-router.route('/register').post(adminController.register);
-router.route('/login').post(adminController.login);
+router.route('/register').post(staffController.register);
+router.route('/login').post(staffController.login);
+router.route('/getAllTeacher').get(staffController.getAllTeacher);
 
 module.exports = router;

@@ -11,6 +11,9 @@ import Register from './features/Auth/Register';
 import QuizForm from './features/Quiz/QuizForm';
 import Layout from './components/Layout';
 import QuizList from './features/Quiz/QuizList';
+import RequireAuth from './features/Auth/RequireAuth';
+import Clses from './features/classes/Clses';
+import Prefetch from './features/Auth/Prefetch';
 
 function App() {
   const location = useLocation();
@@ -34,11 +37,16 @@ function App() {
         </Route>
 
         {/* Private Routes */}
-        <Route path="/" element={<Layout />}>
-          <Route path="dash" element={<Dashboard />} />
-          <Route path="quizForm" element={<QuizForm />} />
-          <Route path="quizzes" element={<QuizList />} />
-          <Route path="logout" element={<Logout />} />
+        <Route element={<Prefetch />}>
+          <Route element={<RequireAuth allowedRoles={['Admin', 'Teacher']} />}>
+            <Route path="dash" element={<Layout />}>
+              <Route index element={<Dashboard />} />
+              <Route path="classes" element={<Clses />} />
+              <Route path="quizForm" element={<QuizForm />} />
+              <Route path="quizzes" element={<QuizList />} />
+              <Route path="logout" element={<Logout />} />
+            </Route>
+          </Route>
         </Route>
       </Routes>
     </>

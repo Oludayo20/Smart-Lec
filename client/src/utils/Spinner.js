@@ -1,4 +1,4 @@
-// import { Outlet } from 'react-router-dom';
+import { Outlet } from 'react-router-dom';
 
 // const Spinner = () => {
 //   return (
@@ -27,6 +27,7 @@ export default function Spinner() {
       >
         <CircularProgress color="inherit" size="5rem" />
       </Backdrop>
+      <Outlet />
     </div>
   );
 }

@@ -216,8 +216,9 @@ function Sidebar({ sidebarOpen, setSidebarOpen }) {
                             </li>
                             <li className="mb-1 last:mb-0">
                               <NavLink
+                                onClick={() => setSidebarOpen(!sidebarOpen)}
                                 end
-                                to="/dash/analytics"
+                                to="/dash/classes"
                                 className={({ isActive }) =>
                                   'block transition duration-150 truncate ' +
                                   (isActive
@@ -226,14 +227,14 @@ function Sidebar({ sidebarOpen, setSidebarOpen }) {
                                 }
                               >
                                 <span className="text-sm font-medium lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200">
-                                  Student
+                                  Classes
                                 </span>
                               </NavLink>
                             </li>
                             <li className="mb-1 last:mb-0">
                               <NavLink
                                 end
-                                to="/dash/fintech"
+                                to="/dash/students"
                                 className={({ isActive }) =>
                                   'block transition duration-150 truncate ' +
                                   (isActive
@@ -242,7 +243,7 @@ function Sidebar({ sidebarOpen, setSidebarOpen }) {
                                 }
                               >
                                 <span className="text-sm font-medium lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200">
-                                  Analytics
+                                  Students
                                 </span>
                               </NavLink>
                             </li>

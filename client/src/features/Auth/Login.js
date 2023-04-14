@@ -29,8 +29,8 @@ export const Login = () => {
     }
 
     if (isSuccess) {
-      toast.success(`Welcome Back`);
       navigate('/dash');
+      toast.success(`Welcome Back ${email}`);
     }
 
     dispatch(reset());
