@@ -17,7 +17,7 @@ const Student = function ({
   this.surname = surname;
   this.email = email;
   this.phone_num = phone_num;
-  this.profile_pic = profile_pic;
+  this.profile_pic = profile_pic || 'Avatar';
   this.class_id = class_id;
 };
 
@@ -28,9 +28,10 @@ Student.register = async (newStudent) => {
   `;
 
   const sqlStudent = `
-    INSERT INTO student (student_id, class_id, admission_num)
+    INSERT INTO students (student_id, class_id, admission_num)
     VALUES (?, ?, ?);
   `;
+
   let connection;
 
   try {

@@ -12,8 +12,6 @@ const useAuth = () => {
   const decoded = jwtDecode(token);
   const userData = decoded.UserData;
 
-  console.log(userData);
-
   const isAdmin = userData.role === 'Admin';
   const isTeacher = userData.role === 'Teacher';
   const role = isAdmin ? 'Admin' : isTeacher ? 'Teacher' : null;

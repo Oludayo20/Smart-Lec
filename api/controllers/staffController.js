@@ -81,12 +81,14 @@ exports.login = asyncHandler(async (req, res) => {
       }
     },
     process.env.ACCESS_TOKEN_SECRET,
-    { expiresIn: '60m' }
+    { expiresIn: '2m' }
   );
 
-  const refreshToken = jwt.sign({}, process.env.REFRESH_TOKEN_SECRET, {
-    expiresIn: '60m'
-  });
+  const refreshToken = jwt.sign(
+    { username: foundUser.email },
+    process.env.REFRESH_TOKEN_SECRET,
+    { expiresIn: '7d' }
+  );
 
   //Create secure cookie with refresh token
   res.cookie('jwt', refreshToken, {
@@ -99,6 +101,50 @@ exports.login = asyncHandler(async (req, res) => {
   // Send accessToken containing user data
   res.status(201).json({ accessToken });
 });
+
+// @desc Refresh
+// @route GET /auth/refresh
+// @access Public - because access token has expired
+exports.refresh = (req, res) => {
+  const cookies = req.cookies;
+
+  if (!cookies?.jwt) return res.status(401).json({ message: 'Unauthorized' });
+
+  const refreshToken = cookies.jwt;
+
+  jwt.verify(
+    refreshToken,
+    process.env.REFRESH_TOKEN_SECRET,
+    asyncHandler(async (err, decoded) => {
+      if (err) return res.status(403).json({ message: 'Forbidden' });
+
+      const foundUser = await Staff.login({
+        email: decoded.email
+      });
+
+      if (!foundUser) return res.status(401).json({ message: 'Unauthorized' });
+
+      const accessToken = jwt.sign(
+        {
+          UserData: {
+            userId: foundUser.user_id,
+            role: foundUser.role,
+            firstName: foundUser.first_name,
+            middleName: foundUser.middle_name,
+            surname: foundUser.surname,
+            email: foundUser.email,
+            phoneNum: foundUser.phone_num,
+            profilePic: foundUser.profile_pic
+          }
+        },
+        process.env.ACCESS_TOKEN_SECRET,
+        { expiresIn: '15m' }
+      );
+
+      res.json({ accessToken });
+    })
+  );
+};
 
 exports.getAllTeacher = asyncHandler(async (req, res) => {
   try {

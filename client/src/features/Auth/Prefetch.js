@@ -16,14 +16,14 @@ const Prefetch = () => {
     if (isSuccess) {
       dispatch(reset());
     }
-  }, [dispatch, isSuccess]);
+  }, [dispatch]);
 
   useEffect(() => {
     dispatch(getAllTeacher());
     if (scc) {
       dispatch(rst());
     }
-  }, [dispatch, scc]);
+  }, [dispatch]);
 
   return <Outlet />;
 };

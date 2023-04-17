@@ -44,6 +44,12 @@ exports.getAllCls = asyncHandler(async (req, res) => {
 
 exports.getClsDetailsById = asyncHandler(async (req, res) => {
   const { classId } = req.body;
+
+  if (!classId) {
+    res.status(404).send({
+      message: 'Class Id Required...'
+    });
+  }
   try {
     const clsDetails = await Class.getClsDetailsById(classId);
     console.log(clsDetails);

@@ -12,8 +12,10 @@ import QuizForm from './features/Quiz/QuizForm';
 import Layout from './components/Layout';
 import QuizList from './features/Quiz/QuizList';
 import RequireAuth from './features/Auth/RequireAuth';
-import Clses from './features/classes/Clses';
 import Prefetch from './features/Auth/Prefetch';
+import AllCls from './features/classes/AllCls';
+import ClsDetails from './features/classes/ClsDetails';
+import PersistLogin from './features/Auth/PresistLogin';
 
 function App() {
   const location = useLocation();
@@ -37,17 +39,20 @@ function App() {
         </Route>
 
         {/* Private Routes */}
+        {/* <Route element={<PersistLogin />}> */}
         <Route element={<Prefetch />}>
           <Route element={<RequireAuth allowedRoles={['Admin', 'Teacher']} />}>
             <Route path="dash" element={<Layout />}>
               <Route index element={<Dashboard />} />
-              <Route path="classes" element={<Clses />} />
+              <Route path="classes" element={<AllCls />} />
+              <Route path="classDetails/:id" element={<ClsDetails />} />
               <Route path="quizForm" element={<QuizForm />} />
               <Route path="quizzes" element={<QuizList />} />
               <Route path="logout" element={<Logout />} />
             </Route>
           </Route>
         </Route>
+        {/* </Route> */}
       </Routes>
     </>
   );

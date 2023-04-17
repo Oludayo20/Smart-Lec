@@ -38,7 +38,7 @@ Class.getAll = async () => {
       COUNT(s.student_id) AS num_students
       FROM classes c
       LEFT JOIN users u ON c.teacher_id = u.user_id
-      LEFT JOIN student s ON c.class_id = s.class_id
+      LEFT JOIN students s ON c.class_id = s.class_id
       GROUP BY c.class_id;
     `);
     return classes.length ? classes : null;
@@ -68,7 +68,7 @@ Class.getClsDetailsById = async (classId) => {
     const cls = {
       class_id: clsDetails[0].class_id,
       class_name: clsDetails[0].class_name,
-      teacher: null,
+      teachers: [],
       students: [],
       subjects: []
     };
@@ -77,9 +77,11 @@ Class.getClsDetailsById = async (classId) => {
     const [teacherDetails] = await pool.query(
       `
       SELECT
+      u.user_id,
         u.first_name,
         u.surname,
         u.email,
+        u.phone_num,
         u.profile_pic
       FROM users u
       WHERE u.user_id = ?
@@ -88,11 +90,13 @@ Class.getClsDetailsById = async (classId) => {
     );
 
     if (teacherDetails.length > 0) {
-      cls.teacher = {
+      cls.teachers.push({
+        teacher_id: teacherDetails[0].user_id,
         name: `${teacherDetails[0].first_name} ${teacherDetails[0].surname}`,
         email: teacherDetails[0].email,
+        phone_num: teacherDetails[0].phone_num,
         profile_pic: teacherDetails[0].profile_pic
-      };
+      });
     }
 
     // Get student details

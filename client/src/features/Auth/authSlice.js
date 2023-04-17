@@ -5,12 +5,15 @@ let token;
 
 const initialState = {
   token: token ? token : null,
+  isUninitialized: false,
   teachers: [],
   isSuccess: false,
   isLoading: false,
   message: '',
   isError: false
 };
+
+console.log(token);
 
 export const register = createAsyncThunk(
   'staff/register',
@@ -31,11 +34,50 @@ export const register = createAsyncThunk(
   }
 );
 
+export const registerStudent = createAsyncThunk(
+  'student/register',
+  async (userData, { rejectWithValue }) => {
+    console.log(userData);
+    try {
+      const response = await axios.post('/student/register', userData);
+      return response.data.message;
+    } catch (error) {
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.toString();
+      console.log(message);
+      return rejectWithValue(message);
+    }
+  }
+);
+
 export const login = createAsyncThunk(
   'staff/login',
   async (userData, { rejectWithValue }) => {
     try {
       const response = await axios.post('/staff/login', userData);
+      return response.data.accessToken;
+    } catch (error) {
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.toString();
+      console.log(message);
+      return rejectWithValue(message);
+    }
+  }
+);
+
+export const refresh = createAsyncThunk(
+  'staff/refresh',
+  async (rejectWithValue) => {
+    try {
+      const response = await axios.post('/staff/refresh');
       return response.data.accessToken;
     } catch (error) {
       const message =
@@ -100,10 +142,37 @@ const authSlice = createSlice({
       state.isLoading = false;
       state.isError = true;
       state.message = action.payload;
-      state.token = null;
+      // state.token = null;
     },
+
     [login.pending]: (state) => {
       state.isLoading = true;
+    },
+    [login.fulfilled]: (state, action) => {
+      state.isLoading = false;
+      state.isSuccess = true;
+      state.token = action.payload;
+    },
+    [login.rejected]: (state, action) => {
+      state.isLoading = false;
+      state.isError = true;
+      state.message = action.payload;
+      state.token = null;
+    },
+    [refresh.pending]: (state) => {
+      state.isLoading = true;
+    },
+    [refresh.fulfilled]: (state, action) => {
+      state.isLoading = false;
+      state.isSuccess = true;
+      state.isUninitialized = true;
+      state.token = action.payload;
+    },
+    [refresh.rejected]: (state, action) => {
+      state.isLoading = false;
+      state.isError = true;
+      state.message = action.payload;
+      state.token = null;
     },
     [getAllTeacher.pending]: (reset, state) => {
       // state.isLoading = true;
@@ -118,17 +187,6 @@ const authSlice = createSlice({
       state.isError = true;
       state.message = action.payload;
       state.teachers = null;
-    },
-    [login.fulfilled]: (state, action) => {
-      state.token = action.payload;
-      state.isSuccess = true;
-      state.isLoading = false;
-    },
-    [login.rejected]: (state, action) => {
-      state.isLoading = false;
-      state.isError = true;
-      state.message = action.payload;
-      state.token = null;
     },
     [logout.fulfilled]: (state) => {
       state.isSuccess = true;

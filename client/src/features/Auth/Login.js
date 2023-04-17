@@ -6,6 +6,7 @@ import { login, reset, status } from './authSlice';
 import { toast } from 'react-toastify';
 import Spinner from '../../utils/Spinner';
 import './LogReg.css';
+import usePersist from '../../hooks/usePersist';
 
 export const Login = () => {
   const emailRef = useRef();
@@ -13,6 +14,8 @@ export const Login = () => {
   const [email, setEmail] = useState('');
 
   const [pwd, setPwd] = useState('');
+
+  const [persist, setPersist] = usePersist();
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -42,17 +45,29 @@ export const Login = () => {
     if (!email || !pwd) {
       return toast.error('Please input email and password');
     } else {
-      const userData = {
-        email,
-        password: pwd
-      };
-      dispatch(login(userData));
+      try {
+        const userData = {
+          email,
+          password: pwd
+        };
+        dispatch(login(userData));
+      } catch (err) {
+        if (!err.status) {
+          toast.error('No Server Response');
+        } else if (err.status === 400) {
+          toast.error('Missing Username or Password');
+        } else if (err.status === 401) {
+          toast.error('Unauthorized');
+        } else {
+          toast.error(err.data?.message);
+        }
+      }
     }
   };
 
-  if (isLoading) {
-    return <Spinner />;
-  }
+  const handleToggle = () => setPersist((prev) => !prev);
+
+  if (isLoading) return <Spinner />;
 
   return (
     <>
@@ -99,8 +114,8 @@ export const Login = () => {
                   type="checkbox"
                   className="bg-green-400"
                   id="persist"
-                  // onChange={togglePersist}
-                  // checked={persist}
+                  onChange={handleToggle}
+                  checked={persist}
                 />
                 <label htmlFor="persist">Trust This Device</label>
               </div>

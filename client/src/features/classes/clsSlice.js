@@ -1,10 +1,11 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from '../../app/api/axios';
 
-let cls;
+let allCls;
 
 const initialState = {
-  cls: cls ? cls : null,
+  allCls: allCls ? allCls : null,
+  cls: null,
   isSuccess: false,
   isLoading: false,
   message: '',
@@ -51,9 +52,9 @@ export const createCls = createAsyncThunk(
 
 export const getClsDetailsById = createAsyncThunk(
   'class/getClsDetailsById',
-  async (id, { rejectWithValue }) => {
+  async (classId, { rejectWithValue }) => {
     try {
-      const response = await axios.post('class/getClsDetailsById', id);
+      const response = await axios.post('class/getClsDetailsById', classId);
       console.log(response.data);
       return response.data;
     } catch (error) {
@@ -108,13 +109,13 @@ const clsSlice = createSlice({
       state.isLoading = false;
       state.isSuccess = true;
       state.message = action.payload.message;
-      state.cls = action.payload.cls;
+      // state.allCls = action.payload.allCls;
     },
     [createCls.rejected]: (state, action) => {
       state.isLoading = false;
       state.isError = true;
       state.message = action.payload;
-      state.cls = null;
+      // state.allCls = null;
     },
     [getCls.pending]: (state) => {
       // state.isLoading = true;
@@ -122,9 +123,23 @@ const clsSlice = createSlice({
     [getCls.fulfilled]: (state, action) => {
       // state.isLoading = false;
       // state.isSuccess = true;
-      state.cls = action.payload;
+      state.allCls = action.payload;
     },
     [getCls.rejected]: (state, action) => {
+      state.isLoading = false;
+      state.isError = true;
+      state.message = action.payload;
+      state.allCls = null;
+    },
+    [getClsDetailsById.pending]: (state) => {
+      state.isLoading = true;
+    },
+    [getClsDetailsById.fulfilled]: (state, action) => {
+      state.isLoading = false;
+      state.isSuccess = true;
+      state.cls = action.payload;
+    },
+    [getClsDetailsById.rejected]: (state, action) => {
       state.isLoading = false;
       state.isError = true;
       state.message = action.payload;
@@ -142,7 +157,7 @@ const clsSlice = createSlice({
       state.isLoading = false;
       state.isError = true;
       state.message = action.payload;
-      state.cls = null;
+      state.allCls = null;
     }
   }
 });

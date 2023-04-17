@@ -34,7 +34,7 @@ exports.register = asyncHandler(async (req, res) => {
 
   try {
     const data = await Student.register(student);
-    return res.status(200).json(data);
+    return res.status(200).json({ message: 'Student Created!!!' });
   } catch (error) {
     return res.status(500).json({
       message:
