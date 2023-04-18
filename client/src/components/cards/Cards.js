@@ -46,7 +46,7 @@ const Cards = () => {
 
           <div>
             <p className="mb-2 text-sm font-medium text-slate-800 dark:text-slate-600">
-              Departments:
+              Teacher:
             </p>
             <p className="text-lg font-semibold text-slate-700 dark:text-slate-500">
               21
@@ -77,7 +77,7 @@ const Cards = () => {
 
           <div>
             <p className="mb-2 text-sm font-medium text-slate-800 dark:text-slate-600">
-              Faculties:
+              Class:
             </p>
             <p className="text-lg font-semibold text-slate-700 dark:text-slate-500">
               6

@@ -29,14 +29,14 @@ import {
 
 function Dashboard() {
   const userDate = useAuth();
-  const { username, email } = userDate;
+  const { firstName, surname, email } = userDate.userData;
 
   return (
     <>
       <main>
         <div className="px-4 sm:px-6 lg:px-8 py-8 w-full max-w-9xl mx-auto">
           {/* Welcome banner */}
-          <WelcomeBanner username={username} />
+          <WelcomeBanner firstName={[surname, ' ', firstName]} />
 
           {/* Dashboard actions */}
           <div className="sm:flex sm:justify-between sm:items-center mb-8">

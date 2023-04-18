@@ -34,26 +34,6 @@ export const register = createAsyncThunk(
   }
 );
 
-export const registerStudent = createAsyncThunk(
-  'student/register',
-  async (userData, { rejectWithValue }) => {
-    console.log(userData);
-    try {
-      const response = await axios.post('/student/register', userData);
-      return response.data.message;
-    } catch (error) {
-      const message =
-        (error.response &&
-          error.response.data &&
-          error.response.data.message) ||
-        error.message ||
-        error.toString();
-      console.log(message);
-      return rejectWithValue(message);
-    }
-  }
-);
-
 export const login = createAsyncThunk(
   'staff/login',
   async (userData, { rejectWithValue }) => {
@@ -77,7 +57,8 @@ export const refresh = createAsyncThunk(
   'staff/refresh',
   async (rejectWithValue) => {
     try {
-      const response = await axios.post('/staff/refresh');
+      const response = await axios.get('/staff/refresh');
+      console.log(response.data);
       return response.data.accessToken;
     } catch (error) {
       const message =
@@ -123,6 +104,7 @@ const authSlice = createSlice({
   initialState,
   reducers: {
     reset: (state) => {
+      state.isUninitialized = false;
       state.isLoading = false;
       state.isSuccess = false;
       state.isError = false;

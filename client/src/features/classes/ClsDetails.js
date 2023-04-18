@@ -84,23 +84,23 @@ const ClsDetails = () => {
                         <Avatar style={{ backgroundColor: 'green' }}>
                           {cls.class_name[0]}
                           {''}
-                          {cls.class_name[cls.class_name.length - 1]}
+                          {cls.class_name[cls?.class_name.length - 1]}
                         </Avatar>
                       </div>
 
-                      <div className="text-slate-800">{cls.class_name}</div>
+                      <div className="text-slate-800">{cls?.class_name}</div>
                     </div>
                   </td>
                   <td className="p-2">
-                    <div className="text-center">{cls.teachers.length}</div>
+                    <div className="text-center">{cls?.teachers.length}</div>
                   </td>
                   <td className="p-2">
                     <div className="text-center text-green-500">
-                      {cls.students.length}
+                      {cls?.students.length}
                     </div>
                   </td>
                   <td className="p-2">
-                    <div className="text-center">{cls.subjects.length}</div>
+                    <div className="text-center">{cls?.subjects.length}</div>
                   </td>
                   <td className="p-2">
                     <div className="text-center text-sky-500">4.7%</div>
@@ -146,7 +146,7 @@ const ClsDetails = () => {
                 </tr>
               </thead>
               {/* Table body */}
-              {cls.teachers.map((teacher) => (
+              {cls?.teachers.map((teacher) => (
                 <tbody className="text-sm font-medium divide-y divide-slate-900">
                   {/* Row */}
                   <tr key={teacher.teacher_id} className="border-3">
@@ -198,7 +198,7 @@ const ClsDetails = () => {
       <div className="mt-4 mb-6 col-span-full xl:col-span-8 bg-white shadow-lg rounded-sm border border-slate-200">
         <header className="px-5 flex justify-between items-start py-4 border-b border-slate-100">
           <h2 className="mt-3 font-semibold text-slate-800">Student Details</h2>
-          <CreateStudent clsId={cls.class_id} />
+          <CreateStudent clsId={cls?.class_id} />
         </header>
         <div className="p-3">
           {/* Table */}
@@ -226,7 +226,7 @@ const ClsDetails = () => {
                 </tr>
               </thead>
               {/* Table body */}
-              {cls.students.map((student) => (
+              {cls?.students.map((student) => (
                 <tbody className="text-sm font-medium divide-y divide-slate-900">
                   {/* Row */}
                   <tr key={student.student_id} className="border-3">
@@ -306,7 +306,7 @@ const ClsDetails = () => {
                 </tr>
               </thead>
               {/* Table body */}
-              {cls.subjects.map((subject) => (
+              {cls?.subjects.map((subject) => (
                 <tbody className="text-sm font-medium divide-y divide-slate-900">
                   {/* Row */}
                   <tr
@@ -375,7 +375,7 @@ const ClsDetails = () => {
         <div className="bg-green-500 px-4 sm:px-6 lg:px-12 py-8 w-full max-w-9xl mx-auto">
           {!cls ? (
             <>
-              <h1>Opps... Something happened</h1>
+              <h1>Opps.. Something happened</h1>
               <Spinner />
             </>
           ) : (
