@@ -1,14 +1,14 @@
 import { useRef, useState, useEffect } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
-import { Link } from 'react-router-dom';
-import { login, reset, status } from './authSlice';
-import { toast } from 'react-toastify';
-import Spinner from '../../utils/Spinner';
-import './LogReg.css';
-import usePersist from '../../hooks/usePersist';
+import { useNavigate, Link } from 'react-router-dom';
 
-export const Login = () => {
+import { useDispatch } from 'react-redux';
+import { setCredentials } from './authSlice';
+import { useLoginMutation } from './authApiSlice';
+
+import usePersist from '../../hooks/usePersist';
+import { toast } from 'react-toastify';
+
+const Login = () => {
   const emailRef = useRef();
 
   const [email, setEmail] = useState('');
@@ -20,57 +20,41 @@ export const Login = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  const { isLoading, isSuccess, isError, message } = useSelector(status);
+  const [login, { isLoading }] = useLoginMutation();
 
   useEffect(() => {
     emailRef.current.focus();
   }, []);
 
-  useEffect(() => {
-    if (isError) {
-      toast.error(message);
-    }
-
-    if (isSuccess) {
-      navigate('/dash');
-      toast.success(`Welcome Back ${email}`);
-    }
-
-    dispatch(reset());
-  }, [isError, isSuccess, message, navigate, dispatch, toast, reset]);
-
   const handleSubmit = async (e) => {
     e.preventDefault();
-    // if button enabled with JS hack
-    if (!email || !pwd) {
-      return toast.error('Please input email and password');
-    } else {
-      try {
-        const userData = {
-          email,
-          password: pwd
-        };
-        dispatch(login(userData));
-      } catch (err) {
-        if (!err.status) {
-          toast.error('No Server Response');
-        } else if (err.status === 400) {
-          toast.error('Missing Username or Password');
-        } else if (err.status === 401) {
-          toast.error('Unauthorized');
-        } else {
-          toast.error(err.data?.message);
-        }
+    if (!email || !pwd) return toast.error('Please input email and password');
+    try {
+      const { accessToken } = await login({ email, password: pwd }).unwrap();
+      dispatch(setCredentials({ accessToken }));
+      setEmail('');
+      setPwd('');
+      navigate('/dash');
+      toast.success(`Welcome Back ${email}`);
+    } catch (err) {
+      if (!err.status) {
+        toast.error('No Server Response');
+      } else if (err.status === 400) {
+        toast.error('Missing Username or Password');
+      } else if (err.status === 401) {
+        toast.error('Unauthorized');
+      } else {
+        toast.error(err.data?.message);
       }
     }
   };
 
   const handleToggle = () => setPersist((prev) => !prev);
 
-  if (isLoading) return <Spinner />;
+  if (isLoading) return <p>Loading...</p>;
 
-  return (
-    <>
+  const content = (
+    <section className="public">
       <div className="bg-grey-lighter min-h-screen flex flex-col">
         <div className="container max-w-sm mx-auto flex-1 flex flex-col items-center justify-center px-2">
           <div className="bg-white px-6 py-8 rounded shadow-md text-black w-full">
@@ -134,8 +118,12 @@ export const Login = () => {
           </div>
         </div>
       </div>
-    </>
+      <footer>
+        <Link to="/">Back to Home</Link>
+      </footer>
+    </section>
   );
-};
 
+  return content;
+};
 export default Login;

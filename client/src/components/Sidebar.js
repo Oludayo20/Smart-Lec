@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { NavLink, Outlet, useLocation } from 'react-router-dom';
-import QuizIcon from '@mui/icons-material/Quiz';
+// import QuizIcon from '@mui/icons-material/Quiz';
 
 import SidebarLinkGroup from './SidebarLinkGroup';
 
@@ -218,7 +218,7 @@ function Sidebar({ sidebarOpen, setSidebarOpen }) {
                               <NavLink
                                 onClick={() => setSidebarOpen(!sidebarOpen)}
                                 end
-                                to="/dash/classes"
+                                to="/dash/class"
                                 className={({ isActive }) =>
                                   'block transition duration-150 truncate ' +
                                   (isActive
@@ -296,7 +296,7 @@ function Sidebar({ sidebarOpen, setSidebarOpen }) {
                                   d="M1 1h22v23H1z"
                                 />
 
-                                <QuizIcon style={{ color: 'white' }} />
+                                {/* <QuizIcon style={{ color: 'white' }} /> */}
                               </svg>
                               <span className="text-sm font-medium ml-3 lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200">
                                 Quiz

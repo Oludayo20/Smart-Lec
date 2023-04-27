@@ -81,13 +81,13 @@ exports.login = asyncHandler(async (req, res) => {
       }
     },
     process.env.ACCESS_TOKEN_SECRET,
-    { expiresIn: '2m' }
+    { expiresIn: '10m' }
   );
 
   const refreshToken = jwt.sign(
-    { username: foundUser.email },
+    { email: foundUser.email },
     process.env.REFRESH_TOKEN_SECRET,
-    { expiresIn: '7d' }
+    { expiresIn: '3d' }
   );
 
   // Create secure cookie with refresh token
@@ -107,11 +107,10 @@ exports.login = asyncHandler(async (req, res) => {
 // @access Public - because access token has expired
 exports.refresh = (req, res) => {
   const cookies = req.cookies['refreshToken'];
-  console.log(cookies);
 
   if (!cookies) return res.status(401).json({ message: 'Unauthorized' });
 
-  const refreshToken = cookies.jwt;
+  const refreshToken = cookies;
 
   jwt.verify(
     refreshToken,
@@ -119,9 +118,9 @@ exports.refresh = (req, res) => {
     asyncHandler(async (err, decoded) => {
       if (err) return res.status(403).json({ message: 'Forbidden' });
 
-      const foundUser = await Staff.login({
-        email: decoded.email
-      });
+      const email = decoded.email;
+
+      const foundUser = await Staff.login(email);
 
       if (!foundUser) return res.status(401).json({ message: 'Unauthorized' });
 
@@ -150,11 +149,20 @@ exports.refresh = (req, res) => {
 exports.getAllTeacher = asyncHandler(async (req, res) => {
   try {
     const teachers = await Staff.getAllTeacher();
-    console.log(teachers);
-    return res.status(201).json(teachers);
+    return res.status(200).json(teachers);
   } catch (error) {
     return res.status(500).json({
       message: error.message || 'Some error occurred while fetching Classes.'
     });
   }
 });
+
+// @desc Logout
+// @route POST /auth/logout
+// @access Public - just to clear cookie if exists
+exports.logout = (req, res) => {
+  const cookies = req.cookies;
+  if (!cookies?.jwt) return res.sendStatus(204); //No content
+  res.clearCookie('jwt', { httpOnly: true, sameSite: 'None', secure: true });
+  res.json({ message: 'Cookie cleared' });
+};

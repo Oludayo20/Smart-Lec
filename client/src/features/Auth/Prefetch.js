@@ -1,31 +1,25 @@
+import { store } from '../../app/store';
+import { clsApiSlice } from '../classes/clsApiSlice';
+import { studentApiSlice } from '../student/studentApiSlice';
+import { usersApiSlice } from '../users/usersApiSlice';
 import { useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { getCls, reset, status } from '../classes/clsSlice';
-import { getAllTeacher, reset as rst, status as stu } from './authSlice';
 import { Outlet } from 'react-router-dom';
 
 const Prefetch = () => {
-  const dispatch = useDispatch();
-
-  const { isSuccess } = useSelector(status);
-  const { isSuccess: scc } = useSelector(stu);
-
   useEffect(() => {
-    dispatch(getCls());
-
-    if (isSuccess) {
-      dispatch(reset());
-    }
-  }, [dispatch]);
-
-  useEffect(() => {
-    dispatch(getAllTeacher());
-    if (scc) {
-      dispatch(rst());
-    }
-  }, [dispatch]);
+    store.dispatch(
+      clsApiSlice.util.prefetch('getCls', 'clsList', { force: true })
+    );
+    store.dispatch(
+      usersApiSlice.util.prefetch('getUsers', 'usersList', { force: true })
+    );
+    store.dispatch(
+      studentApiSlice.util.prefetch('getStudent', 'studentList', {
+        force: true
+      })
+    );
+  }, []);
 
   return <Outlet />;
 };
-
 export default Prefetch;

@@ -1,7 +1,4 @@
 import React, { useState } from 'react';
-
-import Sidebar from './Sidebar';
-import { Header } from './Header';
 import WelcomeBanner from './dashboard/WelcomeBanner';
 import DashboardAvatars from './dashboard/DashboardAvatars';
 import FilterButton from './actions/FilterButton';

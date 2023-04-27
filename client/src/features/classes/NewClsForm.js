@@ -1,70 +1,72 @@
+import { useState, useEffect, useRef } from 'react';
+import { useAddNewClsMutation } from './clsApiSlice';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
   faCheck,
   faInfoCircle,
   faSlash,
   faTimes
 } from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import React, { useRef, useEffect, useState, memo } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import { createCls, reset, status } from './clsSlice';
-import { useSelector, useDispatch } from 'react-redux';
-
 import { toast } from 'react-toastify';
-import Spinner from '../../utils/Spinner';
+import PulseLoader from 'react-spinners/PulseLoader';
 
-const USER_REGEX = /^[A-z][A-z0-9-_ ]{3,23}$/;
+const CLS_REGEX = /^[A-z][A-z0-9-_ ]{3,23}$/;
 
-const CreateCls = () => {
+const NewClsForm = ({ users }) => {
+  const [addNewCls, { data, isLoading, isSuccess, isError, error }] =
+    useAddNewClsMutation();
+
   const clsNameRef = useRef();
   const [isOpen, setIsOpen] = useState(false);
   const [selectedTeacher, setSelectedTeacher] = useState('');
   const [clsName, setClsName] = useState('');
   const [validClsName, setValidClsName] = useState(false);
 
-  const navigate = useNavigate();
-  const dispatch = useDispatch();
-
-  const { teachers } = useSelector((state) => state.auth);
-
-  const { isLoading, isSuccess, isError, message } = useSelector(status);
-
   useEffect(() => {
-    setValidClsName(USER_REGEX.test(clsName));
+    setValidClsName(CLS_REGEX.test(clsName));
   }, [clsName]);
 
   useEffect(() => {
-    if (isError) {
-      toast.error(message);
-    }
-
     if (isSuccess) {
-      toast.success(message);
-
-      setIsOpen(false);
+      toast.success(data.message);
+      setIsOpen(!isOpen);
+      setClsName('');
+      setSelectedTeacher('');
     }
 
-    dispatch(reset());
-  }, [isError, isSuccess, message, dispatch, toast]);
+    if (isError) {
+      toast.error(error?.data?.message);
+    }
+  }, [isSuccess, toast, setIsOpen, isError, error]);
+
+  const canSave = [clsName].every(Boolean) && !isLoading;
+
+  const onSaveCls = async (e) => {
+    e.preventDefault();
+    if (canSave) {
+      await addNewCls({ clsName, teacherId: selectedTeacher });
+    }
+  };
+
+  // console.log(users);
+  const options = users.map((user) => {
+    return (
+      <option key={user.id} value={user.id}>
+        {' '}
+        {user.first_name} {user.surname}
+      </option>
+    );
+  });
 
   const handleButtonClick = () => {
     setIsOpen(!isOpen);
   };
 
   if (isLoading) {
-    return <Spinner />;
+    return <PulseLoader color={'#09cb23'} />;
   }
 
-  const handleCreateCls = () => {
-    if (!clsName || !selectedTeacher) {
-      return toast.error('Class name is required!!');
-    } else {
-      const clsData = { clsName, teacherId: selectedTeacher };
-      dispatch(createCls(clsData));
-    }
-  };
-
-  return (
+  const content = (
     <div className="relative">
       <button
         className={`w-full text-center text-white py-3 rounded bg-green-500 hover:bg-green-600 focus:outline-none my-1 ${
@@ -76,6 +78,7 @@ const CreateCls = () => {
       </button>
       {isOpen && (
         <>
+          {/* <form onSubmit={onSaveNoteClicked}> */}
           <div className="fixed inset-0 z-50 flex items-center justify-center">
             <div
               className="absolute inset-0 bg-gray-500 opacity-75"
@@ -89,14 +92,14 @@ const CreateCls = () => {
               <div className="flex flex-col">
                 <label htmlFor="text-input" className="text-lg font-bold">
                   Class Name:
-                  <FontAwesomeIcon
-                    icon={faCheck}
-                    className={validClsName ? 'valid' : 'hide'}
-                  />
-                  <FontAwesomeIcon
-                    icon={faTimes}
-                    className={validClsName || !clsName ? 'hide' : 'invalid'}
-                  />
+                  {/* <FontAwesomeIcon
+                      icon={faCheck}
+                      className={!validClsName ? 'valid' : 'hide'}
+                    />
+                    <FontAwesomeIcon
+                      icon={faTimes}
+                      className={validClsName || !clsName ? 'hide' : 'invalid'}
+                    /> */}
                 </label>
                 <input
                   type="text"
@@ -109,19 +112,19 @@ const CreateCls = () => {
                   aria-invalid={validClsName ? 'false' : 'true'}
                   aria-describedby="uidnote"
                 />
-                <p
-                  id="uidnote"
-                  className={
-                    clsName && !validClsName ? 'instructions' : 'offscreen'
-                  }
-                >
-                  <FontAwesomeIcon icon={faInfoCircle} />
-                  4 to 24 characters.
-                  <br />
-                  Must begin with a letter.
-                  <br />
-                  Letters, numbers, underscores, hyphens allowed.
-                </p>
+                {/* <p
+                    id="uidnote"
+                    className={
+                      !clsName && validClsName ? 'instructions' : 'offscreen'
+                    }
+                  >
+                    <FontAwesomeIcon icon={faInfoCircle} />
+                    4 to 24 characters.
+                    <br />
+                    Must begin with a letter.
+                    <br />
+                    Letters, numbers, underscores, hyphens allowed.
+                  </p> */}
               </div>
               {/* Teacher */}
               <div className="flex flex-col mb-4">
@@ -137,15 +140,7 @@ const CreateCls = () => {
                   <option className="text-2xl hover:bg-green-600" value="">
                     Select a teacher
                   </option>
-                  {teachers.map((teacher, index) => (
-                    <option
-                      className="text-2xl hover:bg-green-600"
-                      key={index}
-                      value={teacher.user_id}
-                    >
-                      {teacher.first_name} {teacher.surname}
-                    </option>
-                  ))}
+                  {options}
                 </select>
                 <h2 className="text-1.3xl mb-4 text-xs6 text-center text-slate-800 italic border-b-2 border-green-500">
                   This is a List of registered teacher in your school...
@@ -160,7 +155,7 @@ const CreateCls = () => {
                   Close
                 </button>
                 <button
-                  onClick={handleCreateCls}
+                  onClick={onSaveCls}
                   className="w-full text-center text-white py-3 rounded bg-green-500 hover:bg-green-600 focus:outline-none my-1"
                 >
                   Save Class
@@ -168,10 +163,13 @@ const CreateCls = () => {
               </div>
             </div>
           </div>
+          {/* </form> */}
         </>
       )}
     </div>
   );
+
+  return content;
 };
 
-export default memo(CreateCls);
+export default NewClsForm;

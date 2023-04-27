@@ -1,59 +1,68 @@
-import { Routes, Route, useLocation } from 'react-router-dom';
+import { Routes, Route } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { useEffect } from 'react';
-import HeroHome from './components/HeroHome';
-import Header, { WelcomeHeader } from './components/Header';
-import Dashboard from './components/Dashboard';
-import Login from './features/Auth/Login';
-import Logout from './features/Auth/Logout';
-import Register from './features/Auth/Register';
-import QuizForm from './features/Quiz/QuizForm';
 import Layout from './components/Layout';
-import QuizList from './features/Quiz/QuizList';
-import RequireAuth from './features/Auth/RequireAuth';
-import Prefetch from './features/Auth/Prefetch';
-import AllCls from './features/classes/AllCls';
+import Public from './components/Public';
+import Login from './features/auth/Login';
+import DashLayout from './components/DashLayout';
+import Dashboard from './components/Dashboard';
+import ClsList from './features/classes/ClassList';
+import UsersList from './features/users/UsersList';
+import EditUser from './features/users/EditUser';
+import NewUserForm from './features/users/NewUserForm';
 import ClsDetails from './features/classes/ClsDetails';
-import PersistLogin from './features/Auth/PersistLogin';
+import NewCls from './features/classes/NewCls';
+import Prefetch from './features/auth/Prefetch';
+import PersistLogin from './features/auth/PersistLogin';
+import RequireAuth from './features/auth/RequireAuth';
+import useTitle from './hooks/useTitle';
+import P404P from './components/P404P';
 
 function App() {
-  const location = useLocation();
-
-  useEffect(() => {
-    document.querySelector('html').style.scrollBehavior = 'auto';
-    window.scroll({ top: 0 });
-    document.querySelector('html').style.scrollBehavior = '';
-  }, [location.pathname]);
-  // triggered on route change
+  useTitle('Smart Lecture');
 
   return (
     <>
       <ToastContainer />
       <Routes>
-        {/* Public Routes */}
-        <Route path="/" element={<WelcomeHeader />}>
-          <Route index element={<HeroHome />} />
-          <Route path="register" element={<Register />} />
+        <Route path="/" element={<Layout />}>
+          <Route path="*" element={<P404P />} />
+          {/* public routes */}
+          <Route index element={<Public />} />
           <Route path="login" element={<Login />} />
-        </Route>
 
-        {/* Private Routes */}
-        <Route element={<PersistLogin />}>
-          <Route element={<Prefetch />}>
+          {/* Protected Routes */}
+          <Route element={<PersistLogin />}>
             <Route
               element={<RequireAuth allowedRoles={['Admin', 'Teacher']} />}
             >
-              <Route path="dash" element={<Layout />}>
-                <Route index element={<Dashboard />} />
-                <Route path="classes" element={<AllCls />} />
-                <Route path="classDetails/:id" element={<ClsDetails />} />
-                <Route path="quizForm" element={<QuizForm />} />
-                <Route path="quizzes" element={<QuizList />} />
-                <Route path="logout" element={<Logout />} />
+              <Route element={<Prefetch />}>
+                <Route path="dash" element={<DashLayout />}>
+                  <Route index element={<Dashboard />} />
+
+                  <Route
+                    element={
+                      <RequireAuth allowedRoles={['Admin', 'Teacher']} />
+                    }
+                  >
+                    <Route path="users">
+                      <Route index element={<UsersList />} />
+                      <Route path=":id" element={<EditUser />} />
+                      <Route path="new" element={<NewUserForm />} />
+                    </Route>
+                  </Route>
+
+                  <Route path="class">
+                    <Route index element={<ClsList />} />
+                    <Route path="classDetails/:id" element={<ClsDetails />} />
+                    <Route path="new" element={<NewCls />} />
+                  </Route>
+                </Route>
+                {/* End Dash */}
               </Route>
             </Route>
           </Route>
+          {/* End Protected Routes */}
         </Route>
       </Routes>
     </>

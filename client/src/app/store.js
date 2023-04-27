@@ -1,14 +1,16 @@
-import { configureStore } from '@reduxjs/toolkit';
-import authReducer from '../features/Auth/authSlice';
-import quizReducer from '../features/Quiz/quizSlice';
-import clsReducer from '../features/classes/clsSlice';
-import studentAuthReducer from '../features/Student/studentAuthSlice';
+import { configureStore } from "@reduxjs/toolkit"
+import { apiSlice } from './api/apiSlice'
+import { setupListeners } from "@reduxjs/toolkit/query"
+import authReducer from '../features/auth/authSlice'
 
 export const store = configureStore({
-  reducer: {
-    auth: authReducer,
-    studentAuth: studentAuthReducer,
-    quiz: quizReducer,
-    cls: clsReducer
-  }
-});
+    reducer: {
+        [apiSlice.reducerPath]: apiSlice.reducer,
+        auth: authReducer,
+    },
+    middleware: getDefaultMiddleware =>
+        getDefaultMiddleware().concat(apiSlice.middleware),
+    devTools: true
+})
+
+setupListeners(store.dispatch)

@@ -15,6 +15,30 @@ Class.create = async (newClass) => {
   }
 };
 
+Class.updateCls = async ({ clsName, teacherId, clsId }) => {
+  try {
+    const res = await pool.query(
+      `UPDATE classes SET class_name = ?, teacher_id = ? WHERE class_id = ?`,
+      [clsName, teacherId, clsId]
+    );
+    return res;
+  } catch (error) {
+    throw error;
+  }
+};
+
+Class.deleteCls = async (clsId) => {
+  try {
+    const res = await pool.query(
+      `DELETE FROM classes WHERE class_id = ?`,
+      clsId
+    );
+    return res;
+  } catch (error) {
+    throw error;
+  }
+};
+
 // Class.getAll = async () => {
 //   try {
 //     const [classes] =

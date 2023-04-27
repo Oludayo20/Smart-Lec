@@ -81,4 +81,30 @@ Student.login = async (admissionNum) => {
     return `Failed to get Student with username ${admissionNum}: ${err.sqlMessage}`;
   }
 };
+
+Student.getAllStudent = async () => {
+  try {
+    const [students] = await pool.query(
+      `SELECT
+        us.user_id AS student_id,
+        us.first_name,
+        us.middle_name,
+        us.surname,
+        s.admission_num,
+        s.class_id,
+        c.class_name,
+        us.email,
+        us.phone_num,
+        us.profile_pic
+      FROM students s
+      LEFT JOIN users us ON s.student_id = us.user_id
+      LEFT JOIN classes c ON s.class_id = c.class_id
+      `
+    );
+    return students.length ? students : null;
+  } catch (err) {
+    return err.sqlMessage;
+  }
+};
+
 module.exports = Student;

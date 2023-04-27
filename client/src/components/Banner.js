@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import ChatIcon from '@material-ui/icons/Chat';
+// import ChatIcon from '@material-ui/icons/Chat';
 
 function Banner() {
   const [bannerOpen, setBannerOpen] = useState(true);
@@ -33,7 +33,7 @@ function Banner() {
               onClick={() => setBannerOpen(false)}
             >
               <span className="sr-only">Close</span>
-              <ChatIcon />
+              {/* <ChatIcon /> */}
             </button>
           </div>
         </div>

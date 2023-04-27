@@ -11,22 +11,24 @@ exports.register = asyncHandler(async (req, res) => {
     surname,
     email,
     phoneNum,
-    classId,
+    clsId,
     profilePic
   } = req.body;
 
-  if (!admissionNum || !firstName || !surname || !classId) {
+  console.log(req.body);
+
+  if (!admissionNum || !firstName || !surname || !clsId) {
     return res.status(400).send({
       message: 'Admission number, first name, surname and class field required'
     });
   }
 
   const student = new Student({
-    class_id: classId,
+    class_id: clsId,
     admission_num: admissionNum,
     first_name: firstName,
     middle_name: middleName,
-    surname: surname,
+    surname,
     email,
     phone_num: phoneNum,
     profile_pic: profilePic
@@ -91,4 +93,15 @@ exports.login = asyncHandler(async (req, res) => {
 
   // Send accessToken containing user data
   res.status(201).json({ accessToken });
+});
+
+exports.getAllStudent = asyncHandler(async (req, res) => {
+  try {
+    const students = await Student.getAllStudent();
+    return res.status(200).json(students);
+  } catch (error) {
+    return res.status(500).json({
+      message: error.message || 'Some error occurred while fetching Classes.'
+    });
+  }
 });

@@ -6,5 +6,6 @@ router.route('/register').post(staffController.register);
 router.route('/login').post(staffController.login);
 router.route('/getAllTeacher').get(staffController.getAllTeacher);
 router.route('/refresh').get(staffController.refresh);
+router.route('/logout').post(staffController.logout);
 
 module.exports = router;

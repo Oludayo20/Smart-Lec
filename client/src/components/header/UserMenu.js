@@ -1,13 +1,23 @@
 import React, { useState, useRef, useEffect } from 'react';
 import useAuth from '../../hooks/useAuth';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import Transition from '../../utils/Transition';
-
+import { useSendLogoutMutation } from '../../features/auth/authApiSlice';
 import UserAvatar from '../../images/avatar2.png';
-import Logout from '../../features/Auth/Logout';
+import { toast } from 'react-toastify';
 
 function UserMenu() {
   const userData = useAuth();
+
+  const navigate = useNavigate();
+
+  const [sendLogout, { isLoading, isSuccess, isError, error }] =
+    useSendLogoutMutation();
+
+  useEffect(() => {
+    if (isSuccess) navigate('/');
+    if (isError) toast.error(error?.data?.message);
+  }, [isSuccess, navigate, isError, toast, error]);
 
   const [dropdownOpen, setDropdownOpen] = useState(false);
 
@@ -38,6 +48,8 @@ function UserMenu() {
     document.addEventListener('keydown', keyHandler);
     return () => document.removeEventListener('keydown', keyHandler);
   });
+
+  if (isLoading) return <p>Logging Out...</p>;
 
   return (
     <div className="relative inline-flex">
@@ -98,14 +110,13 @@ function UserMenu() {
               </Link>
             </li>
             <li>
-              {/* <Link
-                className="font-medium text-sm text-indigo-500 hover:text-indigo-600 flex items-center py-1 px-3"
-                to="logout"
-                onClick={() => setDropdownOpen(!dropdownOpen)}
+              <button
+                className="font-medium text-sm text-green-500 hover:text-green-900 flex items-center py-1 px-3"
+                onClick={sendLogout}
+                disabled={isLoading ? true : false}
               >
                 Sign Out
-              </Link> */}
-              <Logout />
+              </button>
             </li>
           </ul>
         </div>
