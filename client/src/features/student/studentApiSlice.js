@@ -19,10 +19,13 @@ export const studentApiSlice = apiSlice.injectEndpoints({
           student.id = student.student_id;
           return student;
         });
+
         console.log(loadedStudent);
         return studentAdapter.setAll(initialState, loadedStudent);
       },
       providesTags: (result, error, arg) => {
+        console.log(result);
+        console.log(arg);
         if (result?.ids) {
           return [
             { type: 'Student', id: 'LIST' },
@@ -42,11 +45,11 @@ export const studentApiSlice = apiSlice.injectEndpoints({
       invalidatesTags: [{ type: 'Student', id: 'LIST' }]
     }),
     updateStudent: builder.mutation({
-      query: (initialUserData) => ({
+      query: (initialStudentData) => ({
         url: '/staff',
         method: 'PATCH',
         body: {
-          ...initialUserData
+          ...initialStudentData
         }
       }),
       invalidatesTags: (result, error, arg) => [{ type: 'Student', id: arg.id }]
@@ -76,7 +79,7 @@ export const selectStudentResult =
 // creates memoized selector
 const selectStudentData = createSelector(
   selectStudentResult,
-  (usersResult) => usersResult.data // normalized state object with ids & entities
+  (studentResult) => studentResult.data // normalized state object with ids & entities
 );
 
 //getSelectors creates these selectors and we rename them with aliases using destructuring
@@ -84,7 +87,7 @@ export const {
   selectAll: selectAllStudent,
   selectById: selectStudentById,
   selectIds: selectStudentIds
-  // Pass in a selector that returns the users slice of state
+  // Pass in a selector that returns the student slice of state
 } = studentAdapter.getSelectors(
   (state) => selectStudentData(state) ?? initialState
 );

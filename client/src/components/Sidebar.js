@@ -1,8 +1,10 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { NavLink, Outlet, useLocation } from 'react-router-dom';
-// import QuizIcon from '@mui/icons-material/Quiz';
-
+import QuizIcon from '@mui/icons-material/Quiz';
+import ClassIcon from '@mui/icons-material/Class';
+import DashboardIcon from '@mui/icons-material/Dashboard';
 import SidebarLinkGroup from './SidebarLinkGroup';
+import SchoolIcon from '@mui/icons-material/School';
 
 function Sidebar({ sidebarOpen, setSidebarOpen }) {
   const location = useLocation();
@@ -75,7 +77,7 @@ function Sidebar({ sidebarOpen, setSidebarOpen }) {
             {/* Close button */}
             <button
               ref={trigger}
-              className="lg:hidden text-white hover:text-slate-400"
+              className="lg:hidden text-white hover:text-white"
               onClick={() => setSidebarOpen(!sidebarOpen)}
               aria-controls="sidebar"
               aria-expanded={sidebarOpen}
@@ -95,13 +97,8 @@ function Sidebar({ sidebarOpen, setSidebarOpen }) {
               className="block font-medium text-white hover:text-green-500 py-3 flex items-center transition duration-150 ease-in-out"
               aria-label="Cruip"
             >
-              <span className="text- hover:text-green-900">Smart-</span>
-              <span
-                // style={{ color: '#22c55e' }}
-                className="text-white hover:text-green-900"
-              >
-                Lec
-              </span>
+              <span className="text-white hover:text-green-900">Smart-</span>
+              <span className="text-green-900 hover:text-green-900">Lec</span>
             </NavLink>
           </div>
 
@@ -122,348 +119,170 @@ function Sidebar({ sidebarOpen, setSidebarOpen }) {
               </h3>
               <ul className="mt-3">
                 {/* Dashboard */}
-                <SidebarLinkGroup
-                  activecondition={
-                    pathname === '/dash' || pathname.includes('dash')
-                  }
-                >
-                  {(handleClick, open) => {
-                    return (
-                      <React.Fragment>
-                        <a
-                          href="#0"
-                          className={`block text-slate-200 truncate transition duration-150 ${
-                            pathname === '/dash' || pathname.includes('dash')
-                              ? 'hover:text-slate-500'
-                              : 'hover:text-slate-500'
+                <li className={`px-3 py-2 rounded-sm mb-0.5 last:mb-0`}>
+                  <NavLink
+                    end
+                    to="/dash"
+                    className={`block text-white truncate transition duration-150 ${
+                      pathname === '/dash'
+                        ? 'text-green-800 bg-white px-3 py-2 rounded-sm mb-0.5 last:mb-0'
+                        : 'hover:text-white'
+                    }`}
+                    onClick={() => setSidebarOpen(!sidebarOpen)}
+                  >
+                    <div className="flex items-center">
+                      <svg className="shrink-0 h-6 w-6" viewBox="0 0 24 24">
+                        <path
+                          className={`fill-current ${
+                            pathname === '/dash'
+                              ? 'text-green-900'
+                              : 'text-green-900'
                           }`}
-                          onClick={(e) => {
-                            e.preventDefault();
-                            sidebarExpanded
-                              ? handleClick()
-                              : setSidebarExpanded(true);
-                          }}
-                        >
-                          <div className="flex items-center justify-between">
-                            <div className="flex items-center">
-                              <svg
-                                className="shrink-0 h-6 w-6"
-                                viewBox="0 0 24 24"
-                              >
-                                <path
-                                  className={`fill-current ${
-                                    pathname === '/dash' ||
-                                    pathname.includes('dash')
-                                      ? 'text-green-900'
-                                      : 'text-green-900'
-                                  }`}
-                                  d="M12 0C5.383 0 0 5.383 0 12s5.383 12 12 12 12-5.383 12-12S18.617 0 12 0z"
-                                />
-                                <path
-                                  className={`fill-current ${
-                                    pathname === '/dash' ||
-                                    pathname.includes('dash')
-                                      ? 'text-white'
-                                      : 'text-white'
-                                  }`}
-                                  d="M12 3c-4.963 0-9 4.037-9 9s4.037 9 9 9 9-4.037 9-9-4.037-9-9-9z"
-                                />
-                                <path
-                                  className={`fill-current ${
-                                    pathname === '/dash' ||
-                                    pathname.includes('dash')
-                                      ? 'text-green-900'
-                                      : 'text-green-900'
-                                  }`}
-                                  d="M12 15c-1.654 0-3-1.346-3-3 0-.462.113-.894.3-1.285L6 6l4.714 3.301A2.973 2.973 0 0112 9c1.654 0 3 1.346 3 3s-1.346 3-3 3z"
-                                />
-                              </svg>
-                              <span className="text-sm text-green-900 font-medium ml-3 lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200">
-                                Dashboard
-                              </span>
-                            </div>
-                            {/* Icon */}
-                            <div className="flex shrink-0 ml-2">
-                              <svg
-                                className={`w-3 h-3 shrink-0 ml-1 fill-current text-green-900 ${
-                                  open && 'rotate-180'
-                                }`}
-                                viewBox="0 0 12 12"
-                              >
-                                <path d="M5.9 11.4L.5 6l1.4-1.4 4 4 4-4L11.3 6z" />
-                              </svg>
-                            </div>
-                          </div>
-                        </a>
-                        <div className="lg:hidden lg:sidebar-expanded:block 2xl:block">
-                          <ul className={`pl-9 mt-1 ${!open && 'hidden'}`}>
-                            <li className="mb-1 last:mb-0">
-                              <NavLink
-                                onClick={() => setSidebarOpen(!sidebarOpen)}
-                                end
-                                to="/dash"
-                                className={({ isActive }) =>
-                                  'block transition duration-150 truncate ' +
-                                  (isActive
-                                    ? 'text-green-500'
-                                    : 'text-green-900 hover:text-green-200')
-                                }
-                              >
-                                <span className="text-sm font-medium lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200">
-                                  Main
-                                </span>
-                              </NavLink>
-                            </li>
-                            <li className="mb-1 last:mb-0">
-                              <NavLink
-                                onClick={() => setSidebarOpen(!sidebarOpen)}
-                                end
-                                to="/dash/class"
-                                className={({ isActive }) =>
-                                  'block transition duration-150 truncate ' +
-                                  (isActive
-                                    ? 'text-green-500'
-                                    : 'text-green-900 hover:text-green-200')
-                                }
-                              >
-                                <span className="text-sm font-medium lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200">
-                                  Classes
-                                </span>
-                              </NavLink>
-                            </li>
-                            <li className="mb-1 last:mb-0">
-                              <NavLink
-                                end
-                                to="/dash/students"
-                                className={({ isActive }) =>
-                                  'block transition duration-150 truncate ' +
-                                  (isActive
-                                    ? 'text-green-500'
-                                    : 'text-green-900 hover:text-green-200')
-                                }
-                              >
-                                <span className="text-sm font-medium lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200">
-                                  Students
-                                </span>
-                              </NavLink>
-                            </li>
-                          </ul>
-                        </div>
-                      </React.Fragment>
-                    );
-                  }}
-                </SidebarLinkGroup>
+                          d="M12 0C5.383 0 0 5.383 0 12s5.383 12 12 12 12-5.383 12-12S18.617 0 12 0z"
+                        />
+                        <path
+                          className={`fill-current ${
+                            pathname === '/dash' ? 'text-white' : 'text-white'
+                          }`}
+                          d="M12 3c-4.963 0-9 4.037-9 9s4.037 9 9 9 9-4.037 9-9-4.037-9-9-9z"
+                        />
+                        <path
+                          className={`fill-current ${
+                            pathname === '/dash'
+                              ? 'text-green-900'
+                              : 'text-green-900'
+                          }`}
+                          d="M12 15c-1.654 0-3-1.346-3-3 0-.462.113-.894.3-1.285L6 6l4.714 3.301A2.973 2.973 0 0112 9c1.654 0 3 1.346 3 3s-1.346 3-3 3z"
+                        />
+                      </svg>
+                      <span className="text-sm text-green-900 font-medium ml-3 lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200">
+                        Dashboard
+                      </span>
+                    </div>
+                  </NavLink>
+                </li>
+
+                {/* Class */}
+                <li className={`px-3 py-2 rounded-sm mb-0.5 last:mb-0 `}>
+                  <NavLink
+                    end
+                    to="/dash/class"
+                    className={`block text-white truncate transition duration-150 ${
+                      pathname.includes('class')
+                        ? 'text-green-800 bg-white px-3 py-2 rounded-sm mb-0.5 last:mb-0'
+                        : 'hover:text-white'
+                    }`}
+                    onClick={() => setSidebarOpen(!sidebarOpen)}
+                  >
+                    <div className="flex items-center">
+                      <ClassIcon />
+                      <span className="text-sm font-medium ml-3 lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200">
+                        Class
+                      </span>
+                    </div>
+                  </NavLink>
+                </li>
+
+                {/* Student */}
+                <li
+                  className={`px-3 py-2 rounded-sm mb-0.5 last:mb-0 ${
+                    pathname.includes('student') && 'bg-slate-900'
+                  }`}
+                >
+                  <NavLink
+                    end
+                    to="/dash/student"
+                    className={`block text-white truncate transition duration-150 ${
+                      pathname.includes('student')
+                        ? 'text-green-800 bg-white px-3 py-2 rounded-sm mb-0.5 last:mb-0'
+                        : 'hover:text-white'
+                    }`}
+                    onClick={() => setSidebarOpen(!sidebarOpen)}
+                  >
+                    <div className="flex items-center">
+                      <SchoolIcon />
+                      <span className="text-sm font-medium ml-3 lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200">
+                        Student
+                      </span>
+                    </div>
+                  </NavLink>
+                </li>
 
                 {/* Quiz */}
-                <SidebarLinkGroup activecondition={pathname.includes('quiz')}>
-                  {(handleClick, open) => {
-                    return (
-                      <React.Fragment>
-                        <a
-                          href="#0"
-                          className={`block text-green-900 truncate transition duration-150 ${
-                            pathname.includes('quiz')
-                              ? 'hover:text-green-200'
-                              : 'hover:text-green-200'
+                <li
+                  className={`px-3 py-2 rounded-sm mb-0.5 last:mb-0 ${
+                    pathname.includes('quiz') && 'bg-slate-900'
+                  }`}
+                >
+                  <NavLink
+                    end
+                    to="/dash/quiz"
+                    className={`block text-white truncate transition duration-150 ${
+                      pathname.includes('quiz')
+                        ? 'text-green-800 bg-white px-3 py-2 rounded-sm mb-0.5 last:mb-0'
+                        : 'hover:text-white'
+                    }`}
+                    onClick={() => setSidebarOpen(!sidebarOpen)}
+                  >
+                    <div className="flex items-center">
+                      <QuizIcon />
+                      <span className="text-sm font-medium ml-3 lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200">
+                        Quiz
+                      </span>
+                    </div>
+                  </NavLink>
+                </li>
+
+                {/* Task */}
+                <li
+                  className={`px-3 py-2 rounded-sm mb-0.5 last:mb-0 ${
+                    pathname.includes('task') && 'bg-slate-900'
+                  }`}
+                >
+                  <NavLink
+                    end
+                    to="/dash/task"
+                    className={`block text-white truncate transition duration-150 ${
+                      pathname.includes('task')
+                        ? 'text-green-800 bg-white px-3 py-2 rounded-sm mb-0.5 last:mb-0'
+                        : 'hover:text-white'
+                    }`}
+                    onClick={() => setSidebarOpen(!sidebarOpen)}
+                  >
+                    <div className="flex items-center">
+                      <svg className="shrink-0 h-6 w-6" viewBox="0 0 24 24">
+                        <path
+                          className={`fill-current ${
+                            pathname.includes('dash')
+                              ? 'text-green-900'
+                              : 'text-white-900'
                           }`}
-                          onClick={(e) => {
-                            e.preventDefault();
-                            sidebarExpanded
-                              ? handleClick()
-                              : setSidebarExpanded(true);
-                          }}
-                        >
-                          <div className="flex items-center justify-between">
-                            <div className="flex items-center">
-                              <svg
-                                className="shrink-0 h-6 w-6"
-                                viewBox="0 0 24 24"
-                              >
-                                <path
-                                  className={`fill-current ${
-                                    pathname.includes('quiz')
-                                      ? 'text-green-900'
-                                      : 'text-green-900'
-                                  }`}
-                                  d="M8 1v2H3v19h18V3h-5V1h7v23H1V1z"
-                                />
-                                <path
-                                  className={`fill-current ${
-                                    pathname.includes('quiz')
-                                      ? 'text-green-900'
-                                      : 'text-green-900'
-                                  }`}
-                                  d="M1 1h22v23H1z"
-                                />
-
-                                {/* <QuizIcon style={{ color: 'white' }} /> */}
-                              </svg>
-                              <span className="text-sm font-medium ml-3 lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200">
-                                Quiz
-                              </span>
-                            </div>
-                            {/* Icon */}
-                            <div className="flex shrink-0 ml-2">
-                              <svg
-                                className={`w-3 h-3 shrink-0 ml-1 fill-current text-green-900 ${
-                                  open && 'rotate-180'
-                                }`}
-                                viewBox="0 0 12 12"
-                              >
-                                <path d="M5.9 11.4L.5 6l1.4-1.4 4 4 4-4L11.3 6z" />
-                              </svg>
-                            </div>
-                          </div>
-                        </a>
-                        <div className="lg:hidden lg:sidebar-expanded:block 2xl:block">
-                          <ul className={`pl-9 mt-1 ${!open && 'hidden'}`}>
-                            <li className="mb-1 last:mb-0">
-                              <NavLink
-                                onClick={() => setSidebarOpen(!sidebarOpen)}
-                                end
-                                to="quizForm"
-                                className={({ isActive }) =>
-                                  'block transition duration-150 truncate ' +
-                                  (isActive
-                                    ? 'text-green-900'
-                                    : 'text-green-900 hover:text-green-200')
-                                }
-                              >
-                                <span className="text-sm font-medium lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200">
-                                  Set Quiz
-                                </span>
-                              </NavLink>
-                            </li>
-                            <li className="mb-1 last:mb-0">
-                              <NavLink
-                                end
-                                to="quizzes"
-                                className={({ isActive }) =>
-                                  'block transition duration-150 truncate ' +
-                                  (isActive
-                                    ? 'text-green-900'
-                                    : 'text-green-900 hover:text-green-200')
-                                }
-                              >
-                                <span className="text-sm font-medium lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200">
-                                  Quizzes
-                                </span>
-                              </NavLink>
-                            </li>
-                          </ul>
-                        </div>
-                      </React.Fragment>
-                    );
-                  }}
-                </SidebarLinkGroup>
-
-                {/* Tasks */}
-                <SidebarLinkGroup activecondition={pathname.includes('tasks')}>
-                  {(handleClick, open) => {
-                    return (
-                      <React.Fragment>
-                        <a
-                          href="#0"
-                          className={`block text-green-900 truncate transition duration-150 ${
+                          d="M8 1v2H3v19h18V3h-5V1h7v23H1V1z"
+                        />
+                        <path
+                          className={`fill-current ${
                             pathname.includes('tasks')
-                              ? 'hover:text-green-200'
-                              : 'hover:text-green-200'
+                              ? 'text-green-000'
+                              : 'text-white-900'
                           }`}
-                          onClick={(e) => {
-                            e.preventDefault();
-                            sidebarExpanded
-                              ? handleClick()
-                              : setSidebarExpanded(true);
-                          }}
-                        >
-                          <div className="flex items-center justify-between">
-                            <div className="flex items-center">
-                              <svg
-                                className="shrink-0 h-6 w-6"
-                                viewBox="0 0 24 24"
-                              >
-                                <path
-                                  className={`fill-current ${
-                                    pathname.includes('dash')
-                                      ? 'text-green-900'
-                                      : 'text-green-900'
-                                  }`}
-                                  d="M8 1v2H3v19h18V3h-5V1h7v23H1V1z"
-                                />
-                                <path
-                                  className={`fill-current ${
-                                    pathname.includes('tasks')
-                                      ? 'text-green-000'
-                                      : 'text-green-900'
-                                  }`}
-                                  d="M1 1h22v23H1z"
-                                />
-                                <path
-                                  className={`fill-current ${
-                                    pathname.includes('tasks')
-                                      ? 'text-white'
-                                      : 'text-white'
-                                  }`}
-                                  d="M15 10.586L16.414 12 11 17.414 7.586 14 9 12.586l2 2zM5 0h14v4H5z"
-                                />
-                              </svg>
-                              <span className="text-sm font-medium ml-3 lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200">
-                                Tasks
-                              </span>
-                            </div>
-                            {/* Icon */}
-                            <div className="flex shrink-0 ml-2">
-                              <svg
-                                className={`w-3 h-3 shrink-0 ml-1 fill-current text-green-900 ${
-                                  open && 'rotate-180'
-                                }`}
-                                viewBox="0 0 12 12"
-                              >
-                                <path d="M5.9 11.4L.5 6l1.4-1.4 4 4 4-4L11.3 6z" />
-                              </svg>
-                            </div>
-                          </div>
-                        </a>
-                        <div className="lg:hidden lg:sidebar-expanded:block 2xl:block">
-                          <ul className={`pl-9 mt-1 ${!open && 'hidden'}`}>
-                            <li className="mb-1 last:mb-0">
-                              <NavLink
-                                end
-                                to="/tasks/kanban"
-                                className={({ isActive }) =>
-                                  'block transition duration-150 truncate ' +
-                                  (isActive
-                                    ? 'text-green-900'
-                                    : 'text-green-900 hover:text-green-200')
-                                }
-                              >
-                                <span className="text-sm font-medium lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200">
-                                  Kanban
-                                </span>
-                              </NavLink>
-                            </li>
-                            <li className="mb-1 last:mb-0">
-                              <NavLink
-                                end
-                                to="/tasks/list"
-                                className={({ isActive }) =>
-                                  'block transition duration-150 truncate ' +
-                                  (isActive
-                                    ? 'text-green-900'
-                                    : 'text-green-900 hover:text-green-200')
-                                }
-                              >
-                                <span className="text-sm font-medium lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200">
-                                  List
-                                </span>
-                              </NavLink>
-                            </li>
-                          </ul>
-                        </div>
-                      </React.Fragment>
-                    );
-                  }}
-                </SidebarLinkGroup>
+                          d="M1 1h22v23H1z"
+                        />
+                        <path
+                          className={`fill-current ${
+                            pathname.includes('tasks')
+                              ? 'text-white'
+                              : 'text-green-500'
+                          }`}
+                          d="M15 10.586L16.414 12 11 17.414 7.586 14 9 12.586l2 2zM5 0h14v4H5z"
+                        />
+                      </svg>
+                      <span className="text-sm font-medium ml-3 lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200">
+                        Tasks
+                      </span>
+                    </div>
+                  </NavLink>
+                </li>
+
                 {/* Messages */}
                 <li
                   className={`px-3 py-2 rounded-sm mb-0.5 last:mb-0 ${
@@ -473,11 +292,12 @@ function Sidebar({ sidebarOpen, setSidebarOpen }) {
                   <NavLink
                     end
                     to="/messages"
-                    className={`block text-green-900 truncate transition duration-150 ${
+                    className={`block text-white truncate transition duration-150 ${
                       pathname.includes('messages')
                         ? 'hover:text-green-200'
                         : 'hover:text-green-200'
                     }`}
+                    onClick={() => setSidebarOpen(!sidebarOpen)}
                   >
                     <div className="flex items-center justify-between">
                       <div className="grow flex items-center">
@@ -505,90 +325,10 @@ function Sidebar({ sidebarOpen, setSidebarOpen }) {
                       </div>
                       {/* Badge */}
                       <div className="flex flex-shrink-0 ml-2">
-                        <span className="inline-flex items-center justify-center h-5 text-xs font-medium text-white bg-green-900 px-2 rounded">
+                        <span className="inline-flex items-center justify-center h-5 text-xs font-medium text-green-500 bg-white px-2 rounded">
                           4
                         </span>
                       </div>
-                    </div>
-                  </NavLink>
-                </li>
-                {/* Inbox */}
-                <li
-                  className={`px-3 py-2 rounded-sm mb-0.5 last:mb-0 ${
-                    pathname.includes('inbox') && 'bg-slate-900'
-                  }`}
-                >
-                  <NavLink
-                    end
-                    to="/inbox"
-                    className={`block text-slate-200 truncate transition duration-150 ${
-                      pathname.includes('inbox')
-                        ? 'hover:text-slate-200'
-                        : 'hover:text-white'
-                    }`}
-                  >
-                    <div className="flex items-center">
-                      <svg className="shrink-0 h-6 w-6" viewBox="0 0 24 24">
-                        <path
-                          className={`fill-current ${
-                            pathname.includes('inbox')
-                              ? 'text-indigo-500'
-                              : 'text-slate-600'
-                          }`}
-                          d="M16 13v4H8v-4H0l3-9h18l3 9h-8Z"
-                        />
-                        <path
-                          className={`fill-current ${
-                            pathname.includes('inbox')
-                              ? 'text-indigo-300'
-                              : 'text-slate-400'
-                          }`}
-                          d="m23.72 12 .229.686A.984.984 0 0 1 24 13v8a1 1 0 0 1-1 1H1a1 1 0 0 1-1-1v-8c0-.107.017-.213.051-.314L.28 12H8v4h8v-4H23.72ZM13 0v7h3l-4 5-4-5h3V0h2Z"
-                        />
-                      </svg>
-                      <span className="text-sm font-medium ml-3 lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200">
-                        Inbox
-                      </span>
-                    </div>
-                  </NavLink>
-                </li>
-                {/* Calendar */}
-                <li
-                  className={`px-3 py-2 rounded-sm mb-0.5 last:mb-0 ${
-                    pathname.includes('calendar') && 'bg-slate-900'
-                  }`}
-                >
-                  <NavLink
-                    end
-                    to="/calendar"
-                    className={`block text-slate-200 truncate transition duration-150 ${
-                      pathname.includes('calendar')
-                        ? 'hover:text-slate-200'
-                        : 'hover:text-white'
-                    }`}
-                  >
-                    <div className="flex items-center">
-                      <svg className="shrink-0 h-6 w-6" viewBox="0 0 24 24">
-                        <path
-                          className={`fill-current ${
-                            pathname.includes('calendar')
-                              ? 'text-indigo-500'
-                              : 'text-slate-600'
-                          }`}
-                          d="M1 3h22v20H1z"
-                        />
-                        <path
-                          className={`fill-current ${
-                            pathname.includes('calendar')
-                              ? 'text-indigo-300'
-                              : 'text-slate-400'
-                          }`}
-                          d="M21 3h2v4H1V3h2V1h4v2h10V1h4v2Z"
-                        />
-                      </svg>
-                      <span className="text-sm font-medium ml-3 lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200">
-                        Calendar
-                      </span>
                     </div>
                   </NavLink>
                 </li>
@@ -602,9 +342,9 @@ function Sidebar({ sidebarOpen, setSidebarOpen }) {
                       <React.Fragment>
                         <a
                           href="#0"
-                          className={`block text-slate-200 truncate transition duration-150 ${
+                          className={`block text-white truncate transition duration-150 ${
                             pathname.includes('settings')
-                              ? 'hover:text-slate-200'
+                              ? 'hover:text-white'
                               : 'hover:text-white'
                           }`}
                           onClick={(e) => {
@@ -624,7 +364,7 @@ function Sidebar({ sidebarOpen, setSidebarOpen }) {
                                   className={`fill-current ${
                                     pathname.includes('settings')
                                       ? 'text-indigo-500'
-                                      : 'text-slate-600'
+                                      : 'text-green-800'
                                   }`}
                                   d="M19.714 14.7l-7.007 7.007-1.414-1.414 7.007-7.007c-.195-.4-.298-.84-.3-1.286a3 3 0 113 3 2.969 2.969 0 01-1.286-.3z"
                                 />
@@ -632,7 +372,7 @@ function Sidebar({ sidebarOpen, setSidebarOpen }) {
                                   className={`fill-current ${
                                     pathname.includes('settings')
                                       ? 'text-indigo-300'
-                                      : 'text-slate-400'
+                                      : 'text-white'
                                   }`}
                                   d="M10.714 18.3c.4-.195.84-.298 1.286-.3a3 3 0 11-3 3c.002-.446.105-.885.3-1.286l-6.007-6.007 1.414-1.414 6.007 6.007z"
                                 />
@@ -640,7 +380,7 @@ function Sidebar({ sidebarOpen, setSidebarOpen }) {
                                   className={`fill-current ${
                                     pathname.includes('settings')
                                       ? 'text-indigo-500'
-                                      : 'text-slate-600'
+                                      : 'text-green-800'
                                   }`}
                                   d="M5.7 10.714c.195.4.298.84.3 1.286a3 3 0 11-3-3c.446.002.885.105 1.286.3l7.007-7.007 1.414 1.414L5.7 10.714z"
                                 />
@@ -648,7 +388,7 @@ function Sidebar({ sidebarOpen, setSidebarOpen }) {
                                   className={`fill-current ${
                                     pathname.includes('settings')
                                       ? 'text-indigo-300'
-                                      : 'text-slate-400'
+                                      : 'text-white'
                                   }`}
                                   d="M19.707 9.292a3.012 3.012 0 00-1.415 1.415L13.286 5.7c-.4.195-.84.298-1.286.3a3 3 0 113-3 2.969 2.969 0 01-.3 1.286l5.007 5.006z"
                                 />
@@ -660,7 +400,7 @@ function Sidebar({ sidebarOpen, setSidebarOpen }) {
                             {/* Icon */}
                             <div className="flex shrink-0 ml-2">
                               <svg
-                                className={`w-3 h-3 shrink-0 ml-1 fill-current text-green-900 ${
+                                className={`w-3 h-3 shrink-0 ml-1 fill-current text-white ${
                                   open && 'rotate-180'
                                 }`}
                                 viewBox="0 0 12 12"
@@ -671,7 +411,10 @@ function Sidebar({ sidebarOpen, setSidebarOpen }) {
                           </div>
                         </a>
                         <div className="lg:hidden lg:sidebar-expanded:block 2xl:block">
-                          <ul className={`pl-9 mt-1 ${!open && 'hidden'}`}>
+                          <ul
+                            className={`pl-9 mt-1 ${!open && 'hidden'}`}
+                            onClick={() => setSidebarOpen(!sidebarOpen)}
+                          >
                             <li className="mb-1 last:mb-0">
                               <NavLink
                                 end
@@ -680,7 +423,7 @@ function Sidebar({ sidebarOpen, setSidebarOpen }) {
                                   'block transition duration-150 truncate ' +
                                   (isActive
                                     ? 'text-indigo-500'
-                                    : 'text-slate-400 hover:text-slate-200')
+                                    : 'text-white hover:text-white')
                                 }
                               >
                                 <span className="text-sm font-medium lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200">
@@ -696,7 +439,7 @@ function Sidebar({ sidebarOpen, setSidebarOpen }) {
                                   'block transition duration-150 truncate ' +
                                   (isActive
                                     ? 'text-indigo-500'
-                                    : 'text-slate-400 hover:text-slate-200')
+                                    : 'text-white hover:text-white')
                                 }
                               >
                                 <span className="text-sm font-medium lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200">
@@ -712,7 +455,7 @@ function Sidebar({ sidebarOpen, setSidebarOpen }) {
                                   'block transition duration-150 truncate ' +
                                   (isActive
                                     ? 'text-indigo-500'
-                                    : 'text-slate-400 hover:text-slate-200')
+                                    : 'text-white hover:text-white')
                                 }
                               >
                                 <span className="text-sm font-medium lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200">
@@ -728,7 +471,7 @@ function Sidebar({ sidebarOpen, setSidebarOpen }) {
                                   'block transition duration-150 truncate ' +
                                   (isActive
                                     ? 'text-indigo-500'
-                                    : 'text-slate-400 hover:text-slate-200')
+                                    : 'text-white hover:text-white')
                                 }
                               >
                                 <span className="text-sm font-medium lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200">
@@ -744,7 +487,7 @@ function Sidebar({ sidebarOpen, setSidebarOpen }) {
                                   'block transition duration-150 truncate ' +
                                   (isActive
                                     ? 'text-indigo-500'
-                                    : 'text-slate-400 hover:text-slate-200')
+                                    : 'text-white hover:text-white')
                                 }
                               >
                                 <span className="text-sm font-medium lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200">
@@ -760,7 +503,7 @@ function Sidebar({ sidebarOpen, setSidebarOpen }) {
                                   'block transition duration-150 truncate ' +
                                   (isActive
                                     ? 'text-indigo-500'
-                                    : 'text-slate-400 hover:text-slate-200')
+                                    : 'text-white hover:text-white')
                                 }
                               >
                                 <span className="text-sm font-medium lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200">
@@ -783,9 +526,9 @@ function Sidebar({ sidebarOpen, setSidebarOpen }) {
                       <React.Fragment>
                         <a
                           href="#0"
-                          className={`block text-slate-200 truncate transition duration-150 ${
+                          className={`block text-white truncate transition duration-150 ${
                             pathname.includes('utility')
-                              ? 'hover:text-slate-200'
+                              ? 'hover:text-white'
                               : 'hover:text-white'
                           }`}
                           onClick={(e) => {
@@ -805,7 +548,7 @@ function Sidebar({ sidebarOpen, setSidebarOpen }) {
                                   className={`fill-current ${
                                     pathname.includes('utility')
                                       ? 'text-indigo-300'
-                                      : 'text-slate-400'
+                                      : 'text-white'
                                   }`}
                                   cx="18.5"
                                   cy="5.5"
@@ -815,7 +558,7 @@ function Sidebar({ sidebarOpen, setSidebarOpen }) {
                                   className={`fill-current ${
                                     pathname.includes('utility')
                                       ? 'text-indigo-500'
-                                      : 'text-slate-600'
+                                      : 'text-green-800'
                                   }`}
                                   cx="5.5"
                                   cy="5.5"
@@ -825,7 +568,7 @@ function Sidebar({ sidebarOpen, setSidebarOpen }) {
                                   className={`fill-current ${
                                     pathname.includes('utility')
                                       ? 'text-indigo-500'
-                                      : 'text-slate-600'
+                                      : 'text-green-800'
                                   }`}
                                   cx="18.5"
                                   cy="18.5"
@@ -835,7 +578,7 @@ function Sidebar({ sidebarOpen, setSidebarOpen }) {
                                   className={`fill-current ${
                                     pathname.includes('utility')
                                       ? 'text-indigo-300'
-                                      : 'text-slate-400'
+                                      : 'text-white'
                                   }`}
                                   cx="5.5"
                                   cy="18.5"
@@ -849,7 +592,7 @@ function Sidebar({ sidebarOpen, setSidebarOpen }) {
                             {/* Icon */}
                             <div className="flex shrink-0 ml-2">
                               <svg
-                                className={`w-3 h-3 shrink-0 ml-1 fill-current text-green-900 ${
+                                className={`w-3 h-3 shrink-0 ml-1 fill-current text-white ${
                                   open && 'rotate-180'
                                 }`}
                                 viewBox="0 0 12 12"
@@ -861,7 +604,10 @@ function Sidebar({ sidebarOpen, setSidebarOpen }) {
                         </a>
                         <div className="lg:hidden lg:sidebar-expanded:block 2xl:block">
                           <ul className={`pl-9 mt-1 ${!open && 'hidden'}`}>
-                            <li className="mb-1 last:mb-0">
+                            <li
+                              className="mb-1 last:mb-0"
+                              onClick={() => setSidebarOpen(!sidebarOpen)}
+                            >
                               <NavLink
                                 end
                                 to="/utility/changelog"
@@ -869,7 +615,7 @@ function Sidebar({ sidebarOpen, setSidebarOpen }) {
                                   'block transition duration-150 truncate ' +
                                   (isActive
                                     ? 'text-indigo-500'
-                                    : 'text-slate-400 hover:text-slate-200')
+                                    : 'text-white hover:text-white')
                                 }
                               >
                                 <span className="text-sm font-medium lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200">
@@ -885,7 +631,7 @@ function Sidebar({ sidebarOpen, setSidebarOpen }) {
                                   'block transition duration-150 truncate ' +
                                   (isActive
                                     ? 'text-indigo-500'
-                                    : 'text-slate-400 hover:text-slate-200')
+                                    : 'text-white hover:text-white')
                                 }
                               >
                                 <span className="text-sm font-medium lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200">
@@ -901,7 +647,7 @@ function Sidebar({ sidebarOpen, setSidebarOpen }) {
                                   'block transition duration-150 truncate ' +
                                   (isActive
                                     ? 'text-indigo-500'
-                                    : 'text-slate-400 hover:text-slate-200')
+                                    : 'text-white hover:text-white')
                                 }
                               >
                                 <span className="text-sm font-medium lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200">
@@ -917,7 +663,7 @@ function Sidebar({ sidebarOpen, setSidebarOpen }) {
                                   'block transition duration-150 truncate ' +
                                   (isActive
                                     ? 'text-indigo-500'
-                                    : 'text-slate-400 hover:text-slate-200')
+                                    : 'text-white hover:text-white')
                                 }
                               >
                                 <span className="text-sm font-medium lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200">
@@ -933,7 +679,7 @@ function Sidebar({ sidebarOpen, setSidebarOpen }) {
                                   'block transition duration-150 truncate ' +
                                   (isActive
                                     ? 'text-indigo-500'
-                                    : 'text-slate-400 hover:text-slate-200')
+                                    : 'text-white hover:text-white')
                                 }
                               >
                                 <span className="text-sm font-medium lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200">
@@ -949,7 +695,7 @@ function Sidebar({ sidebarOpen, setSidebarOpen }) {
                                   'block transition duration-150 truncate ' +
                                   (isActive
                                     ? 'text-indigo-500'
-                                    : 'text-slate-400 hover:text-slate-200')
+                                    : 'text-white hover:text-white')
                                 }
                               >
                                 <span className="text-sm font-medium lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200">
@@ -967,7 +713,7 @@ function Sidebar({ sidebarOpen, setSidebarOpen }) {
             </div>
             {/* More group */}
             <div>
-              <h3 className="text-xs uppercase text-slate-500 font-semibold pl-3">
+              <h3 className="text-xs uppercase text-white font-semibold pl-3">
                 <span
                   className="hidden lg:block lg:sidebar-expanded:hidden 2xl:hidden text-center w-6"
                   aria-hidden="true"
@@ -986,8 +732,8 @@ function Sidebar({ sidebarOpen, setSidebarOpen }) {
                       <React.Fragment>
                         <a
                           href="#0"
-                          className={`block text-slate-200 truncate transition duration-150 ${
-                            open ? 'hover:text-slate-200' : 'hover:text-white'
+                          className={`block text-white truncate transition duration-150 ${
+                            open ? 'hover:text-white' : 'hover:text-white'
                           }`}
                           onClick={(e) => {
                             e.preventDefault();
@@ -1003,11 +749,11 @@ function Sidebar({ sidebarOpen, setSidebarOpen }) {
                                 viewBox="0 0 24 24"
                               >
                                 <path
-                                  className="fill-current text-slate-600"
+                                  className="fill-current text-green-800"
                                   d="M8.07 16H10V8H8.07a8 8 0 110 8z"
                                 />
                                 <path
-                                  className="fill-current text-slate-400"
+                                  className="fill-current text-white"
                                   d="M15 12L8 6v5H0v2h8v5z"
                                 />
                               </svg>
@@ -1018,7 +764,7 @@ function Sidebar({ sidebarOpen, setSidebarOpen }) {
                             {/* Icon */}
                             <div className="flex shrink-0 ml-2">
                               <svg
-                                className={`w-3 h-3 shrink-0 ml-1 fill-current text-green-900 ${
+                                className={`w-3 h-3 shrink-0 ml-1 fill-current text-white ${
                                   open && 'rotate-180'
                                 }`}
                                 viewBox="0 0 12 12"
@@ -1030,11 +776,14 @@ function Sidebar({ sidebarOpen, setSidebarOpen }) {
                         </a>
                         <div className="lg:hidden lg:sidebar-expanded:block 2xl:block">
                           <ul className={`pl-9 mt-1 ${!open && 'hidden'}`}>
-                            <li className="mb-1 last:mb-0">
+                            <li
+                              className="mb-1 last:mb-0"
+                              onClick={() => setSidebarOpen(!sidebarOpen)}
+                            >
                               <NavLink
                                 end
                                 to="/signin"
-                                className="block text-slate-400 hover:text-slate-200 transition duration-150 truncate"
+                                className="block text-white hover:text-white transition duration-150 truncate"
                               >
                                 <span className="text-sm font-medium lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200">
                                   Sign in
@@ -1045,7 +794,7 @@ function Sidebar({ sidebarOpen, setSidebarOpen }) {
                               <NavLink
                                 end
                                 to="/signup"
-                                className="block text-slate-400 hover:text-slate-200 transition duration-150 truncate"
+                                className="block text-white hover:text-white transition duration-150 truncate"
                               >
                                 <span className="text-sm font-medium lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200">
                                   Sign up
@@ -1056,7 +805,7 @@ function Sidebar({ sidebarOpen, setSidebarOpen }) {
                               <NavLink
                                 end
                                 to="/reset-password"
-                                className="block text-slate-400 hover:text-slate-200 transition duration-150 truncate"
+                                className="block text-white hover:text-white transition duration-150 truncate"
                               >
                                 <span className="text-sm font-medium lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200">
                                   Reset Password
@@ -1083,7 +832,7 @@ function Sidebar({ sidebarOpen, setSidebarOpen }) {
                   viewBox="0 0 24 24"
                 >
                   <path
-                    className="text-slate-400"
+                    className="text-white"
                     d="M19.586 11l-5-5L16 4.586 23.414 12 16 19.414 14.586 18l5-5H7v-2z"
                   />
                   <path className="text-slate-600" d="M3 23H1V1h2z" />

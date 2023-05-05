@@ -17,6 +17,7 @@ import PersistLogin from './features/auth/PersistLogin';
 import RequireAuth from './features/auth/RequireAuth';
 import useTitle from './hooks/useTitle';
 import P404P from './components/P404P';
+import HeroHome from './components/HeroHome';
 
 function App() {
   useTitle('Smart Lecture');
@@ -27,9 +28,12 @@ function App() {
       <Routes>
         <Route path="/" element={<Layout />}>
           <Route path="*" element={<P404P />} />
+
           {/* public routes */}
-          <Route index element={<Public />} />
-          <Route path="login" element={<Login />} />
+          <Route element={<Public />}>
+            <Route index element={<HeroHome />} />
+            <Route path="login" element={<Login />} />
+          </Route>
 
           {/* Protected Routes */}
           <Route element={<PersistLogin />}>
