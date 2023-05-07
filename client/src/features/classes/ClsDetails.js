@@ -20,7 +20,14 @@ const ClsDetails = () => {
 
   let content;
 
-  if (isLoading || isFetching) content = <PulseLoader color={'#09cb23'} />;
+  if (isLoading || isFetching)
+    return (content = (
+      <>
+        <div className="flex justify-center items-center h-screen">
+          <PulseLoader color={'#09cb23'} />
+        </div>
+      </>
+    ));
 
   if (isError) {
     content = <p className="errmsg">{error?.data?.message}</p>;

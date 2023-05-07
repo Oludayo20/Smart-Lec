@@ -48,7 +48,7 @@ const PersistLogin = () => {
     content = (
       <>
         <div className="flex justify-center items-center h-screen">
-          <PulseLoader color={'#09cb23'} />
+          <PulseLoader size={'30px'} color={'#09cb23'} />
         </div>
       </>
     );

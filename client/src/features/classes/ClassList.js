@@ -2,6 +2,8 @@ import { useGetClsQuery } from './clsApiSlice';
 import Cls from './Cls';
 import NewCls from './NewCls';
 import PulseLoader from 'react-spinners/PulseLoader';
+import WelcomeBanner from '../../components/dashboard/WelcomeBanner';
+import useAuth from '../../hooks/useAuth';
 
 const ClassList = () => {
   const {
@@ -15,6 +17,9 @@ const ClassList = () => {
     refetchOnFocus: true,
     refetchOnMountOrArgChange: true
   });
+
+  const userDate = useAuth();
+  const { firstName, surname } = userDate.userData;
 
   let content;
 
@@ -34,12 +39,9 @@ const ClassList = () => {
       <>
         {/* Create Class */}
         <header className="px-5 py-4 border-b border-slate-100">
-          <h2 className="font-semibold text-slate-800">This is a Big Banner</h2>
-        </header>
-
-        <div className="px-5 py-2">
+          <WelcomeBanner firstName={[surname, ' ', firstName]} />
           <NewCls />
-        </div>
+        </header>
 
         <div className="mt-4 col-span-full xl:col-span-8 bg-white shadow-lg rounded-sm border border-slate-200">
           <header className="px-5 py-4 border-b border-slate-100">

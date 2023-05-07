@@ -83,12 +83,12 @@ const EditStudentForm = ({ user }) => {
   const content = (
     <div className="relative">
       <button
-        className={`p-2 w-full text-center text-white py-3 rounded bg-green-500 hover:bg-green-600 focus:outline-none ${
+        className={`w-full text-center text-green-800 rounded hover:bg-green-600 focus:outline-none ${
           isOpen && 'bg-green-500'
         }`}
         onClick={handleButtonClick}
       >
-        Create Student
+        Edit Stud
       </button>
       {isOpen && (
         <>

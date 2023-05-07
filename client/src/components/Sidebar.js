@@ -123,10 +123,10 @@ function Sidebar({ sidebarOpen, setSidebarOpen }) {
                   <NavLink
                     end
                     to="/dash"
-                    className={`block text-white truncate transition duration-150 ${
+                    className={`block truncate transition duration-150 ${
                       pathname === '/dash'
-                        ? 'text-green-800 bg-white px-3 py-2 rounded-sm mb-0.5 last:mb-0'
-                        : 'hover:text-white'
+                        ? 'text-green-700 bg-white px-3 py-2 rounded-sm mb-0.5 last:mb-0'
+                        : ' text-white hover:text-white'
                     }`}
                     onClick={() => setSidebarOpen(!sidebarOpen)}
                   >
@@ -155,7 +155,7 @@ function Sidebar({ sidebarOpen, setSidebarOpen }) {
                           d="M12 15c-1.654 0-3-1.346-3-3 0-.462.113-.894.3-1.285L6 6l4.714 3.301A2.973 2.973 0 0112 9c1.654 0 3 1.346 3 3s-1.346 3-3 3z"
                         />
                       </svg>
-                      <span className="text-sm text-green-900 font-medium ml-3 lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200">
+                      <span className="text-sm font-medium ml-3 lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200">
                         Dashboard
                       </span>
                     </div>
@@ -167,10 +167,10 @@ function Sidebar({ sidebarOpen, setSidebarOpen }) {
                   <NavLink
                     end
                     to="/dash/class"
-                    className={`block text-white truncate transition duration-150 ${
+                    className={`block truncate transition duration-150 ${
                       pathname.includes('class')
-                        ? 'text-green-800 bg-white px-3 py-2 rounded-sm mb-0.5 last:mb-0'
-                        : 'hover:text-white'
+                        ? 'text-green-700 bg-white px-3 py-2 rounded-sm mb-0.5 last:mb-0'
+                        : 'text-white hover:text-white'
                     }`}
                     onClick={() => setSidebarOpen(!sidebarOpen)}
                   >

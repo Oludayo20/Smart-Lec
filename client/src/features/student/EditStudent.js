@@ -1,11 +1,11 @@
 import EditStudentForm from './EditStudentForm';
-import { useGetStudentQuery } from './studentApiSlice';
+import { useGetStudentsQuery } from './studentApiSlice';
 import PulseLoader from 'react-spinners/PulseLoader';
 
 const EditStudent = ({ studentId }) => {
   console.log(studentId);
 
-  const student = useGetStudentQuery('studentList', {
+  const { student } = useGetStudentsQuery('studentList', {
     selectFormResult: ({ data }) => ({
       student: data?.entities[studentId]
     })
@@ -16,7 +16,7 @@ const EditStudent = ({ studentId }) => {
   const content = student ? (
     <EditStudentForm user={student} />
   ) : (
-    <PulseLoader color={'#22c55e'} />
+    <PulseLoader size={'5px'} color={'#22c55e'} />
   );
 
   return content;

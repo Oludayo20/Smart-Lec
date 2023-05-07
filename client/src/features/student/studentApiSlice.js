@@ -1,13 +1,13 @@
 import { createSelector, createEntityAdapter } from '@reduxjs/toolkit';
 import { apiSlice } from '../../app/api/apiSlice';
 
-const studentAdapter = createEntityAdapter({});
+const studentsAdapter = createEntityAdapter({});
 
-const initialState = studentAdapter.getInitialState();
+const initialState = studentsAdapter.getInitialState();
 
-export const studentApiSlice = apiSlice.injectEndpoints({
+export const studentsApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
-    getStudent: builder.query({
+    getStudents: builder.query({
       query: () => ({
         url: '/student/getAllStudent',
         validateStatus: (response, result) => {
@@ -15,17 +15,14 @@ export const studentApiSlice = apiSlice.injectEndpoints({
         }
       }),
       transformResponse: (responseData) => {
-        const loadedStudent = responseData.map((student) => {
+        const loadedStudents = responseData.map((student) => {
           student.id = student.student_id;
           return student;
         });
-
-        console.log(loadedStudent);
-        return studentAdapter.setAll(initialState, loadedStudent);
+        return studentsAdapter.setAll(initialState, loadedStudents);
       },
       providesTags: (result, error, arg) => {
         console.log(result);
-        console.log(arg);
         if (result?.ids) {
           return [
             { type: 'Student', id: 'LIST' },
@@ -66,28 +63,28 @@ export const studentApiSlice = apiSlice.injectEndpoints({
 });
 
 export const {
-  useGetStudentQuery,
+  useGetStudentsQuery,
   useAddNewStudentMutation,
   useUpdateStudentMutation,
   useDeleteStudentMutation
-} = studentApiSlice;
+} = studentsApiSlice;
 
 // returns the query result object
-export const selectStudentResult =
-  studentApiSlice.endpoints.getStudent.select();
+export const selectStudentsResult =
+  studentsApiSlice.endpoints.getStudents.select();
 
 // creates memoized selector
-const selectStudentData = createSelector(
-  selectStudentResult,
-  (studentResult) => studentResult.data // normalized state object with ids & entities
+const selectStudentsData = createSelector(
+  selectStudentsResult,
+  (studentsResult) => studentsResult.data // normalized state object with ids & entities
 );
 
 //getSelectors creates these selectors and we rename them with aliases using destructuring
 export const {
-  selectAll: selectAllStudent,
-  selectById: selectStudentById,
-  selectIds: selectStudentIds
+  selectAll: selectAllStudents,
+  selectById: selectStudentsById,
+  selectIds: selectStudentsIds
   // Pass in a selector that returns the student slice of state
-} = studentAdapter.getSelectors(
-  (state) => selectStudentData(state) ?? initialState
+} = studentsAdapter.getSelectors(
+  (state) => selectStudentsData(state) ?? initialState
 );

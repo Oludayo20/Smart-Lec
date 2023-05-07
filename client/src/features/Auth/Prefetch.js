@@ -1,6 +1,6 @@
 import { store } from '../../app/store';
 import { clsApiSlice } from '../classes/clsApiSlice';
-import { studentApiSlice } from '../student/studentApiSlice';
+import { studentsApiSlice } from '../student/studentApiSlice';
 import { usersApiSlice } from '../users/usersApiSlice';
 import { useEffect } from 'react';
 import { Outlet } from 'react-router-dom';
@@ -14,7 +14,7 @@ const Prefetch = () => {
       usersApiSlice.util.prefetch('getUsers', 'usersList', { force: true })
     );
     store.dispatch(
-      studentApiSlice.util.prefetch('getStudent', 'studentList', {
+      studentsApiSlice.util.prefetch('getStudents', 'studentList', {
         force: true
       })
     );
