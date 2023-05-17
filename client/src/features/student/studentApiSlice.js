@@ -22,7 +22,6 @@ export const studentsApiSlice = apiSlice.injectEndpoints({
         return studentsAdapter.setAll(initialState, loadedStudents);
       },
       providesTags: (result, error, arg) => {
-        console.log(result);
         if (result?.ids) {
           return [
             { type: 'Student', id: 'LIST' },

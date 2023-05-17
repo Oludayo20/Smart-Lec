@@ -5,6 +5,7 @@ import ClassIcon from '@mui/icons-material/Class';
 import DashboardIcon from '@mui/icons-material/Dashboard';
 import SidebarLinkGroup from './SidebarLinkGroup';
 import SchoolIcon from '@mui/icons-material/School';
+import SubjectIcon from '@mui/icons-material/Subject';
 
 function Sidebar({ sidebarOpen, setSidebarOpen }) {
   const location = useLocation();
@@ -178,6 +179,27 @@ function Sidebar({ sidebarOpen, setSidebarOpen }) {
                       <ClassIcon />
                       <span className="text-sm font-medium ml-3 lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200">
                         Class
+                      </span>
+                    </div>
+                  </NavLink>
+                </li>
+
+                {/* Subject */}
+                <li className={`px-3 py-2 rounded-sm mb-0.5 last:mb-0 `}>
+                  <NavLink
+                    end
+                    to="/dash/subject"
+                    className={`block truncate transition duration-150 ${
+                      pathname.includes('subject')
+                        ? 'text-green-700 bg-white px-3 py-2 rounded-sm mb-0.5 last:mb-0'
+                        : 'text-white hover:text-white'
+                    }`}
+                    onClick={() => setSidebarOpen(!sidebarOpen)}
+                  >
+                    <div className="flex items-center">
+                      <SubjectIcon />
+                      <span className="text-sm font-medium ml-3 lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200">
+                        Subjects
                       </span>
                     </div>
                   </NavLink>

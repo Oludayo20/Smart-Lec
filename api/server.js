@@ -24,6 +24,7 @@ app.use('/school', require('./routes/schoolRoutes'));
 app.use('/staff', require('./routes/staffRoutes'));
 app.use('/class', require('./routes/classRoutes'));
 app.use('/student', require('./routes/studentRoutes'));
+app.use('/subject', require('./routes/subjectRoutes'));
 
 app.all('*', (req, res) => {
   res.status(404);

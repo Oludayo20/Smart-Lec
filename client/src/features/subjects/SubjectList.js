@@ -1,19 +1,19 @@
-import { useGetClsQuery } from './clsApiSlice';
-import Cls from './Cls';
-import NewCls from './NewCls';
+import { useGetSubjectsQuery } from './subjectsApiSlice';
+import Subject from './Subject';
+import NewSubject from './NewSubject';
 import PulseLoader from 'react-spinners/PulseLoader';
 import WelcomeBanner from '../../components/dashboard/WelcomeBanner';
 import useAuth from '../../hooks/useAuth';
 import { toast } from 'react-toastify';
 
-const ClassList = () => {
+const SubjectList = () => {
   const {
-    data: cls,
+    data: subject,
     isLoading,
     isSuccess,
     isError,
     error
-  } = useGetClsQuery('clsList', {
+  } = useGetSubjectsQuery('subjectList', {
     pollingInterval: 15000,
     refetchOnFocus: true,
     refetchOnMountOrArgChange: true
@@ -31,17 +31,18 @@ const ClassList = () => {
   }
 
   if (isSuccess) {
-    const { ids } = cls;
+    const { ids } = subject;
 
     const tableContent =
-      ids?.length && ids.map((clsId) => <Cls key={clsId} clsId={clsId} />);
+      ids?.length &&
+      ids.map((subjectId) => <Subject key={subjectId} subjectId={subjectId} />);
 
     content = (
       <>
         {/* Create Class */}
         <header className="px-5 py-4 border-b border-slate-100">
           <WelcomeBanner firstName={[surname, ' ', firstName]} />
-          <NewCls />
+          <NewSubject />
         </header>
 
         <div className="mt-4 col-span-full xl:col-span-8 bg-white shadow-lg rounded-sm border border-slate-200">
@@ -56,22 +57,20 @@ const ClassList = () => {
                 <thead className="text-xs uppercase text-slate-400 bg-slate-50 rounded-sm">
                   <tr>
                     <th className="p-2">
-                      <div className="font-semibold text-left">class name</div>
-                    </th>
-                    <th className="p-2">
-                      <div className="font-semibold text-center">
-                        Teacher Name
+                      <div className="font-semibold text-left">
+                        subject name
                       </div>
                     </th>
                     <th className="p-2">
                       <div className="font-semibold text-center">
-                        Num of Student
+                        class Name
                       </div>
                     </th>
                     <th className="p-2">
-                      <div className="font-semibold text-center">
-                        Num of Subjects
-                      </div>
+                      <div className="font-semibold text-center">Note</div>
+                    </th>
+                    <th className="p-2">
+                      <div className="font-semibold text-center">NotePdf</div>
                     </th>
                     <th className="p-2">
                       <div className="font-semibold text-center">
@@ -93,4 +92,4 @@ const ClassList = () => {
 
   return content;
 };
-export default ClassList;
+export default SubjectList;

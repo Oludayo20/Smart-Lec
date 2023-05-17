@@ -5,6 +5,7 @@ import Avatar from '@mui/material/Avatar';
 import EditCls from './EditCls';
 import NewStudentForm from '../student/NewStudentForm';
 import EditStudent from '../student/EditStudent';
+import NewSubjectForm from '../subjects/NewSubjectForm';
 
 const ClsDetails = () => {
   const { id } = useParams();
@@ -308,8 +309,11 @@ const ClsDetails = () => {
     let subjectCard = (
       <>
         <div className="mt-4 mb-6 col-span-full xl:col-span-8 bg-white shadow-lg rounded-sm border border-slate-200">
-          <header className="px-5 py-4 border-b border-slate-100">
-            <h2 className="font-semibold text-slate-800">Subject Details</h2>
+          <header className="px-5 flex justify-between items-start py-4 border-b border-slate-100">
+            <h2 className="mt-3 font-semibold text-slate-800">
+              Subject Details
+            </h2>
+            <NewSubjectForm clsId={cls?.class_id} />
           </header>
           <div className="p-3">
             {/* Table */}
@@ -351,10 +355,7 @@ const ClsDetails = () => {
                     className="text-sm font-medium divide-y divide-slate-900"
                   >
                     {/* Row */}
-                    <tr
-                      className="border-3"
-                      // onClick={() => getClassById(class_id)}
-                    >
+                    <tr className="border-3">
                       <td className="p-2">
                         <div className="flex items-center">
                           <div
@@ -374,24 +375,12 @@ const ClsDetails = () => {
                       </td>
                       <td className="p-2">
                         <div className="text-center">
-                          {subject?.subject_note ? (
-                            subject?.subject_note
-                          ) : (
-                            <>
-                              <h1>No Note</h1>
-                            </>
-                          )}
+                          {subject?.subject_note ? '1 Note' : 'No Note'}
                         </div>
                       </td>
                       <td className="p-2">
                         <div className="text-center">
-                          {subject?.subject_pdf ? (
-                            subject?.subject_pdf
-                          ) : (
-                            <>
-                              <h1>No Pdf</h1>
-                            </>
-                          )}
+                          {subject?.subject_pdf ? '1 Pdf' : 'No NotePdf'}
                         </div>
                       </td>
                       <td className="p-2">

@@ -18,6 +18,7 @@ import RequireAuth from './features/auth/RequireAuth';
 import useTitle from './hooks/useTitle';
 import P404P from './components/P404P';
 import HeroHome from './components/HeroHome';
+import SubjectList from './features/subjects/SubjectList';
 
 function App() {
   useTitle('Smart Lecture');
@@ -60,6 +61,12 @@ function App() {
                     <Route index element={<ClsList />} />
                     <Route path="classDetails/:id" element={<ClsDetails />} />
                     <Route path="new" element={<NewCls />} />
+                  </Route>
+
+                  <Route path="subject">
+                    <Route index element={<SubjectList />} />
+                    {/* <Route path="classDetails/:id" element={<ClsDetails />} />
+                    <Route path="new" element={<NewCls />} /> */}
                   </Route>
                 </Route>
                 {/* End Dash */}
