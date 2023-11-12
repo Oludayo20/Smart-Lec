@@ -23,6 +23,7 @@ import {
   AttendanceLink,
   GeneratedLink
 } from '../features/Attendance/AttendanceLink';
+import ClassList from '../features/classes/ClassList';
 
 function Dashboard() {
   const userDate = useAuth();
@@ -67,6 +68,7 @@ function Dashboard() {
           <div className="grid grid-cols-12 gap-6">
             <AttendanceLink />
             <GeneratedLink />
+            <ClassList />
             {/* Line chart (Acme Plus) */}
             {/* <DashboardCard01 /> */}
             {/* Line chart (Acme Advanced) */}
