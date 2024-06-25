@@ -64,14 +64,14 @@ exports.updateCls = asyncHandler(async (req, res) => {
   const { clsName, teacherId, clsId } = req.body;
 
   if (!clsName || !clsId) {
-    res.status(400).send({
+    return res.status(400).send({
       message: 'Name or Id can not be empty!'
     });
   }
 
   try {
     const updatedCls = await Class.updateCls({ clsName, teacherId, clsId });
-    return res.status(201).json({
+    return res.status(200).json({
       updatedCls,
       message: `Class with the name ${clsName} is Updated successfully`
     });
@@ -88,14 +88,14 @@ exports.deleteCls = asyncHandler(async (req, res) => {
   console.log(req.body);
 
   if (!clsId) {
-    res.status(400).send({
+    return res.status(400).send({
       message: 'Class Id not found!'
     });
   }
 
   try {
     const deletedCls = await Class.deleteCls(clsId);
-    return res.status(201).json({
+    return res.status(200).json({
       deletedCls,
       message: `Class is deleted successfully`
     });
